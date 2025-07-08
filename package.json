@@ -27,6 +27,7 @@
 	"dependencies": {
 		"@threlte/core": "^8.0.5",
 		"@threlte/extras": "^9.4.1",
+		"d3": "^7.9.0",
 		"papaparse": "^5.5.3",
 		"three": "^0.178.0"
 	}

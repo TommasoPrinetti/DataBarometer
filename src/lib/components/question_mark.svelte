@@ -18,7 +18,9 @@
 		fill: #dbdbdb;
 		position: relative;
 		cursor: pointer;
-		transform: translateY(-10px);
+		transform: translateY(-70%);
+		mix-blend-mode: difference;
+		z-index: 10;
 	}
 
 	svg:hover {
@@ -28,7 +30,10 @@
 
 	svg:hover ~ .explanation_container {
 		opacity: 1;
-		transition: opacity 0.1s ease-in-out;
+		visibility: visible;
+		transition:
+			opacity 0.2s ease-in-out,
+			visibility 0.2s ease-in-out;
 	}
 
 	svg:active {
@@ -41,18 +46,43 @@
 		background-color: white;
 		display: block;
 		opacity: 0;
+		visibility: hidden;
 		user-select: none;
 		pointer-events: none;
-		transition: opacity 0.1s ease-in-out;
+		transition:
+			opacity 0.2s ease-in-out,
+			visibility 0.2s ease-in-out;
 		width: max-content;
+		max-width: 200px;
 		height: fit-content;
-		border-radius: 5px;
-		padding: 5px;
-		transform: translateX(130%) translateY(-250%);
+		border-radius: 8px;
+		padding: 8px 12px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		border: 1px solid #e0e0e0;
+		z-index: 1000;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%) translateY(5px);
+	}
+
+	.explanation_container::before {
+		content: '';
+		position: absolute;
+		top: -5px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 0;
+		height: 0;
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		border-bottom: 5px solid white;
 	}
 
 	p {
 		padding: 0;
 		margin: 0;
+		font-size: 10px;
+		color: #333;
+		line-height: 1.4;
 	}
 </style>

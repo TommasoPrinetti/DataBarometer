@@ -9,8 +9,6 @@ async function parseCSV() {
 		dynamicTyping: true
 	});
 
-	//console.log(result.data);
-
 	return result.data;
 }
 
