@@ -3,114 +3,87 @@
 	import QuestionMark from '$lib/components/question_mark.svelte';
 	import terrainTest from '$lib/assets/terrain_test.png';
 	import BarChart from '$lib/components/BarChart.svelte';
-	import { isChartMode, isWorstMode } from '$lib/dataset/stores';
+	import {
+		isChartMode,
+		isWorstMode,
+		isCurrentCountry,
+		globalOverview,
+		threePillars,
+		evaluationClusters
+	} from '$lib/dataset/stores';
+	import { slide } from 'svelte/transition';
 
 	export let countryData;
-
-	const globalOverview = [
-		{
-			displayName: 'Country overall',
-			dataKey: 'Overall',
-			maxValue: 66.85
-		},
-		{
-			displayName: 'Effectiveness',
-			dataKey: 'Law-vs-release gap',
-			maxValue: 40.34
-		},
-		{
-			displayName: 'Global ranking',
-			dataKey: 'Regional rank',
-			maxValue: 43
-		}
-	];
-
-	const threePillars = [
-		{
-			displayName: 'Governance',
-			dataKey: 'Governance',
-			maxValue: 68.32,
-			worstValue: 19.94
-		},
-		{
-			displayName: 'Availability',
-			dataKey: 'Availability',
-			maxValue: 66,
-			worstValue: 6.67
-		},
-		{
-			displayName: 'Capability',
-			dataKey: 'Capability',
-			maxValue: 76.55,
-			worstValue: 23.98
-		}
-	];
-
-	const evaluationClusters = [
-		{
-			displayName: 'Company Info.',
-			dataKey: 'Company Information',
-			maxValue: 55.57,
-			worstValue: 0
-		},
-		{
-			displayName: 'Political Integrity',
-			dataKey: 'Political Integrity',
-			maxValue: 77.73,
-			worstValue: 5.74
-		},
-		{
-			displayName: 'Pub. Procurement',
-			dataKey: 'Public Procurement',
-			maxValue: 95.21,
-			worstValue: 21.25
-		},
-		{
-			displayName: 'Public Finance',
-			dataKey: 'Public Finance',
-			maxValue: 91.53,
-			worstValue: 5
-		},
-		{
-			displayName: 'Gov. Foundation',
-			dataKey: 'Governance Foundation',
-			maxValue: 84.11,
-			worstValue: 12.89
-		},
-		{
-			displayName: 'Equitable Access',
-			dataKey: 'Equitable Access',
-			maxValue: 90,
-			worstValue: 0
-		},
-		{
-			displayName: 'Critical Comp.',
-			dataKey: 'Critical Competencies',
-			maxValue: 84.69,
-			worstValue: 0
-		},
-		{
-			displayName: 'Land Manag.',
-			dataKey: 'Land Management',
-			maxValue: 60.6,
-			worstValue: 0
-		}
-	];
+	export let isSmall = false;
 </script>
 
-<div class="card_container">
-	{#if !$isChartMode}
-		<div class="card_columns" id="terrain_column">
-			<img src={terrainTest} alt="Tunisia" class="terrain_image" />
-		</div>
+{#if $isCurrentCountry === countryData.CountryName && !isSmall}
+	<div class="card_container" transition:slide={{ duration: 300 }}>
+		{#if !$isChartMode}
+			<div class="card_columns" id="terrain_column">
+				<img src={terrainTest} alt="Tunisia" class="terrain_image" />
+			</div>
 
-		<div class="card_columns" id="textual_data">
-			<div>
+			<div class="card_columns" id="textual_data">
+				<div>
+					<div class="data_header">
+						<div>
+							<h2>{countryData.CountryName}</h2>
+							<p>{countryData.Flag}</p>
+						</div>
+						<button class="download_button" aria-label="Download country data">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
+								><path
+									d="M480-322.87 268.52-534.35l63.89-65.41L434.5-497.44v-310.69h91v310.69l102.09-102.32 63.89 65.41L480-322.87Zm-237.13 171q-37.78 0-64.39-26.61t-26.61-64.39v-120h91v120h474.26v-120h91v120q0 37.78-26.61 64.39t-64.39 26.61H242.87Z"
+								/></svg
+							>
+						</button>
+					</div>
+					<div class="data_grid">
+						<div>
+							<p class="data_title">Global overview</p>
+							<div class="data_triple_grid">
+								{#each globalOverview as item}
+									<div class="number_container">
+										<h3>{item.displayName}<QuestionMark /></h3>
+										<p>{countryData[item.dataKey]}<span>/{item.maxValue}</span></p>
+									</div>
+								{/each}
+							</div>
+						</div>
+						<div>
+							<p class="data_title">Three main pillars</p>
+							<div class="data_triple_grid">
+								{#each threePillars as pillar}
+									<div class="number_container">
+										<h3>{pillar.displayName}<QuestionMark /></h3>
+										<p>{countryData[pillar.dataKey]}<span>/{pillar.maxValue}</span></p>
+									</div>
+								{/each}
+							</div>
+						</div>
+						<div>
+							<p class="data_title">Eight evaluation clusters</p>
+							<div class="data_triple_grid">
+								{#each evaluationClusters as cluster}
+									<div class="number_container">
+										<h3>{cluster.displayName}<QuestionMark /></h3>
+										<p>{countryData[cluster.dataKey]}<span>/{cluster.maxValue}</span></p>
+									</div>
+								{/each}
+							</div>
+						</div>
+					</div>
+				</div>
+				<img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" />
+			</div>
+		{:else if $isChartMode}
+			<div class="chart_grandpa">
 				<div class="data_header">
 					<div>
 						<h2>{countryData.CountryName}</h2>
-						<p>{countryData.Flag}</p>
 					</div>
+					<p style="align-self: center; font-size: 48px;">{countryData.Flag}</p>
 					<button class="download_button" aria-label="Download country data">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
 							><path
@@ -119,163 +92,129 @@
 						>
 					</button>
 				</div>
-				<div class="data_grid">
-					<div>
-						<p class="data_title">Global overview</p>
-						<div class="data_triple_grid">
-							{#each globalOverview as item}
-								<div class="number_container">
-									<h3>{item.displayName}<QuestionMark /></h3>
-									<p>{countryData[item.dataKey]}<span>/{item.maxValue}</span></p>
-								</div>
-							{/each}
-						</div>
-					</div>
-					<div>
-						<p class="data_title">Three main pillars</p>
-						<div class="data_triple_grid">
-							{#each threePillars as pillar}
-								<div class="number_container">
-									<h3>{pillar.displayName}<QuestionMark /></h3>
-									<p>{countryData[pillar.dataKey]}<span>/{pillar.maxValue}</span></p>
-								</div>
-							{/each}
-						</div>
-					</div>
-					<div>
-						<p class="data_title">Eight evaluation clusters</p>
-						<div class="data_triple_grid">
-							{#each evaluationClusters as cluster}
-								<div class="number_container">
-									<h3>{cluster.displayName}<QuestionMark /></h3>
-									<p>{countryData[cluster.dataKey]}<span>/{cluster.maxValue}</span></p>
-								</div>
-							{/each}
-						</div>
-					</div>
-				</div>
-			</div>
-			<img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" />
-		</div>
-	{:else if $isChartMode}
-		<div class="chart_grandpa">
-			<div class="data_header">
-				<div>
-					<h2>{countryData.CountryName}</h2>
-				</div>
-				<p style="align-self: center; font-size: 48px;">{countryData.Flag}</p>
-				<button class="download_button" aria-label="Download country data">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
-						><path
-							d="M480-322.87 268.52-534.35l63.89-65.41L434.5-497.44v-310.69h91v310.69l102.09-102.32 63.89 65.41L480-322.87Zm-237.13 171q-37.78 0-64.39-26.61t-26.61-64.39v-120h91v120h474.26v-120h91v120q0 37.78-26.61 64.39t-64.39 26.61H242.87Z"
-						/></svg
-					>
-				</button>
-			</div>
-			<div class="chart_header">
-				<div class="number_container">
-					<h3>Population<QuestionMark /></h3>
-					<p>{countryData.Population} people</p>
-				</div>
-				<div class="number_container">
-					<h3>Gov. form<QuestionMark /></h3>
-					<p>{countryData.GovForm}</p>
-				</div>
-				<div class="number_container">
-					<h3>GDP<QuestionMark /></h3>
-					<p>${countryData.Gdp} million</p>
-				</div>
-				{#each globalOverview as item}
+				<div class="chart_header">
 					<div class="number_container">
-						<h3>{item.displayName}<QuestionMark /></h3>
-						<p>{countryData[item.dataKey]}<span>/{item.maxValue}</span></p>
+						<h3>Population<QuestionMark /></h3>
+						<p>{countryData.Population} people</p>
 					</div>
-				{/each}
-			</div>
-			<div class="double_column_chart">
-				<div class="single_column_chart">
-					<div class="column_header">
-						<h2>Three main pillars</h2>
-						<button onclick={() => isWorstMode.set(!$isWorstMode)}>
-							{#if $isWorstMode}
-								<p>worst</p>
-							{:else}
-								<p>best</p>
-							{/if}
-						</button>
+					<div class="number_container">
+						<h3>Gov. form<QuestionMark /></h3>
+						<p>{countryData.GovForm}</p>
 					</div>
-					<div class="sx_column">
-						{#each threePillars as pillar}
-							<div class="vertical_chart_container">
-								<BarChart
-									length={countryData[pillar.dataKey]}
-									maxValue={$isWorstMode ? pillar.worstValue : pillar.maxValue}
-									flag={countryData.Flag}
-									isVertical={true}
-								/>
-								<div class="number_container">
-									<h3>{pillar.displayName}<QuestionMark /></h3>
-									<p>{countryData[pillar.dataKey]}<span>/{pillar.maxValue}</span></p>
+					<div class="number_container">
+						<h3>GDP<QuestionMark /></h3>
+						<p>${countryData.Gdp} million</p>
+					</div>
+					{#each globalOverview as item}
+						<div class="number_container">
+							<h3>{item.displayName}<QuestionMark /></h3>
+							<p>{countryData[item.dataKey]}<span>/{item.maxValue}</span></p>
+						</div>
+					{/each}
+				</div>
+				<div class="double_column_chart">
+					<div class="single_column_chart">
+						<div class="column_header">
+							<h2>Three main pillars</h2>
+							<button onclick={() => isWorstMode.set(!$isWorstMode)}>
+								{#if $isWorstMode}
+									<p>worst</p>
+								{:else}
+									<p>best</p>
+								{/if}
+							</button>
+						</div>
+						<div class="sx_column">
+							{#each threePillars as pillar}
+								<div class="vertical_chart_container">
+									<BarChart
+										length={countryData[pillar.dataKey]}
+										maxValue={$isWorstMode ? pillar.worstValue : pillar.maxValue}
+										flag={countryData.Flag}
+										isVertical={true}
+									/>
+									<div class="number_container">
+										<h3>{pillar.displayName}<QuestionMark /></h3>
+										<p>{countryData[pillar.dataKey]}<span>/{pillar.maxValue}</span></p>
+									</div>
 								</div>
-							</div>
-						{/each}
+							{/each}
+						</div>
+					</div>
+					<div class="single_column_chart">
+						<div class="column_header">
+							<h2>Eight evaluation clusters</h2>
+							<button onclick={() => isWorstMode.set(!$isWorstMode)}>
+								{#if $isWorstMode}
+									<p>worst</p>
+								{:else}
+									<p>best</p>
+								{/if}
+							</button>
+						</div>
+						<div class="dx_column">
+							{#each evaluationClusters as cluster}
+								<div class="single_chart_container">
+									<div class="number_container">
+										<h3>{cluster.displayName}<QuestionMark /></h3>
+										<p>{countryData[cluster.dataKey]}<span>/{cluster.maxValue}</span></p>
+									</div>
+									<BarChart
+										length={countryData[cluster.dataKey]}
+										maxValue={$isWorstMode ? cluster.worstValue : cluster.maxValue}
+										flag={countryData.Flag}
+										isVertical={false}
+									/>
+								</div>
+							{/each}
+						</div>
 					</div>
 				</div>
-				<div class="single_column_chart">
-					<div class="column_header">
-						<h2>Eight evaluation clusters</h2>
-						<button onclick={() => isWorstMode.set(!$isWorstMode)}>
-							{#if $isWorstMode}
-								<p>worst</p>
-							{:else}
-								<p>best</p>
-							{/if}
-						</button>
-					</div>
-					<div class="dx_column">
-						{#each evaluationClusters as cluster}
-							<div class="single_chart_container">
-								<div class="number_container">
-									<h3>{cluster.displayName}<QuestionMark /></h3>
-									<p>{countryData[cluster.dataKey]}<span>/{cluster.maxValue}</span></p>
-								</div>
-								<BarChart
-									length={countryData[cluster.dataKey]}
-									maxValue={$isWorstMode ? cluster.worstValue : cluster.maxValue}
-									flag={countryData.Flag}
-									isVertical={false}
-								/>
-							</div>
-						{/each}
-					</div>
-				</div>
+				<img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" />
 			</div>
-			<img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" />
+		{/if}
+
+		<button class="side_button" aria-label="Close" onclick={() => isCurrentCountry.set('')}>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
+				><path
+					d="M256-192.35 192.35-256l224-224-224-224L256-767.65l224 224 224-224L767.65-704l-224 224 224 224L704-192.35l-224-224-224 224Z"
+				/></svg
+			>
+		</button>
+
+		<button
+			class="side_button"
+			aria-label="Refresh"
+			onclick={() => {
+				isChartMode.set(!$isChartMode);
+			}}
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
+				><path
+					d="M481.52-154.26q-135.43 0-231.23-94.2-95.79-94.19-95.79-228.91v-7.24L94.09-424.2 35.7-482.83 200-647.37l164.3 164.54-58.39 58.63-60.41-60.41v6.52q0 96.89 68.83 164.86 68.82 67.97 167.19 67.97 26.72 0 52.32-6.36 25.59-6.36 50.07-19.08l67.42 67.18q-39.68 24.39-82.31 36.82-42.63 12.44-87.5 12.44Zm278.72-158.13L595.7-476.7l58.63-58.63 60.41 60.42v-6.52q0-96.9-68.95-164.86-68.94-67.97-167.31-67.97-26.72 0-52.32 6.36-25.59 6.36-50.07 19.07l-67.18-67.41q39.68-24.39 82.19-36.71 42.51-12.31 87.38-12.31 135.43 0 231.35 94.19 95.91 94.2 95.91 228.92v7.24l60.17-60.42 58.63 58.63-164.3 164.31Z"
+				/></svg
+			>
+		</button>
+	</div>
+{:else if isSmall}
+	<div class="small_card_container">
+		<div class="small_card_sphere"></div>
+		<div class="small_map">
+			<img src={terrainTest} alt="Map" />
 		</div>
-	{/if}
-
-	<button class="side_button" aria-label="Close">
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
-			><path
-				d="M256-192.35 192.35-256l224-224-224-224L256-767.65l224 224 224-224L767.65-704l-224 224 224 224L704-192.35l-224-224-224 224Z"
-			/></svg
-		>
-	</button>
-
-	<button
-		class="side_button"
-		aria-label="Refresh"
-		onclick={() => {
-			isChartMode.set(!$isChartMode);
-		}}
-	>
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
-			><path
-				d="M481.52-154.26q-135.43 0-231.23-94.2-95.79-94.19-95.79-228.91v-7.24L94.09-424.2 35.7-482.83 200-647.37l164.3 164.54-58.39 58.63-60.41-60.41v6.52q0 96.89 68.83 164.86 68.82 67.97 167.19 67.97 26.72 0 52.32-6.36 25.59-6.36 50.07-19.08l67.42 67.18q-39.68 24.39-82.31 36.82-42.63 12.44-87.5 12.44Zm278.72-158.13L595.7-476.7l58.63-58.63 60.41 60.42v-6.52q0-96.9-68.95-164.86-68.94-67.97-167.31-67.97-26.72 0-52.32 6.36-25.59 6.36-50.07 19.07l-67.18-67.41q39.68-24.39 82.19-36.71 42.51-12.31 87.38-12.31 135.43 0 231.35 94.19 95.91 94.2 95.91 228.92v7.24l60.17-60.42 58.63 58.63-164.3 164.31Z"
-			/></svg
-		>
-	</button>
-</div>
+		<div class="small_info_container">
+			<div class="small_header">
+				<h2>{countryData.CountryName}</h2>
+				<p>{countryData.Flag}</p>
+			</div>
+			<div class="small_counters">
+				<p>Average: <b>{countryData.Overall_per_country}</b></p>
+				<p>Availability: <b>{countryData.Availability}</b></p>
+				<p>Capability: <b>{countryData.Capability}</b></p>
+			</div>
+		</div>
+	</div>
+{/if}
 
 <style>
 	* {
@@ -368,7 +307,7 @@
 		position: fixed;
 		bottom: 50%;
 		left: 50%;
-		transform: translate(-50%, 50%);
+		transform: translate(-50%, 55%) scale(0.8);
 		background-color: #000;
 		display: flex;
 		flex-direction: row;
@@ -379,6 +318,7 @@
 		padding: 20px;
 		background-color: black;
 		column-gap: 20px;
+		z-index: 10;
 	}
 
 	.card_columns {
@@ -395,13 +335,14 @@
 
 	.card_columns:nth-of-type(2) {
 		background-color: transparent;
-		width: 52%;
+		width: 50%;
 	}
 
 	.card_columns:nth-of-type(2) > div {
 		display: flex;
 		flex-direction: column;
 		row-gap: 35px;
+		width: 100%;
 	}
 
 	.data_header {
@@ -658,5 +599,90 @@
 		width: 100%;
 		background-color: #d9d9d9;
 		transition: height 0.8s ease-in-out;
+	}
+
+	.small_card_container {
+		width: 250px;
+		height: 115px;
+		display: inline-flex;
+		flex-direction: row;
+		column-gap: 4px;
+		padding: 4px;
+		justify-content: space-between;
+		background-color: rgba(0, 0, 0, 1);
+		border-radius: 6px;
+		position: static;
+		font-size: 8px;
+	}
+
+	.small_card_sphere {
+		width: 20px;
+		height: 20px;
+		border-radius: 100%;
+		background-color: yellow;
+		position: absolute;
+		top: -9%;
+		left: -9%;
+	}
+
+	:global(.small_card_container.minimized) {
+		transform: scale(0);
+		transition: transform 0.3s ease-in-out;
+	}
+
+	.small_map {
+		width: 50%;
+		height: 100%;
+		background-color: white;
+		border-radius: 3px;
+		overflow: hidden;
+		box-sizing: border-box;
+	}
+
+	:global(.small_map > img, picture) {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+
+	.small_info_container {
+		width: 100%;
+		height: 100%;
+		background-color: transparent;
+		border-radius: 5px;
+		justify-content: space-between;
+		display: flex;
+		flex-direction: column;
+		color: white;
+	}
+
+	.small_header {
+		display: inline-flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+	}
+
+	.small_counters {
+		height: fit-content;
+		display: flex;
+		flex-direction: column;
+		row-gap: 1px;
+	}
+
+	.small_counters > p {
+		font-size: 12px;
+	}
+
+	.small_header h2 {
+		font-size: 18px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.small_header p {
+		font-size: 12px;
 	}
 </style>
