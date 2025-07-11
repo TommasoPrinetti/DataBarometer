@@ -38,12 +38,8 @@
 		transform: translate(-50%, -50%);
 		align-items: center;
 		background-color: white;
-	}
-
-	.explore_bar.minimized {
-		top: 5%;
-		transform: translate(-50%, -50%) scale(0.5);
-		transition: all 0.3s ease-in-out;
+		transition: all 1.8s cubic-bezier(0.94, -0.01, 0.56, 0.99);
+		will-change: transform, top, left, padding;
 	}
 
 	.explore_title {
@@ -53,6 +49,20 @@
 		color: #000000;
 		text-transform: uppercase;
 		white-space: nowrap;
+		transition: font-size 0.65s cubic-bezier(0.94, -0.01, 0.56, 0.99) 1.45s;
+		will-change: font-size;
+	}
+
+	.explore_bar.minimized {
+		top: 8%;
+		transform: translate(-50%, 0%);
+		padding: 7px 20px 7px 20px;
+		transition: all 1.5s cubic-bezier(0.94, -0.01, 0.56, 0.99) 0.45s;
+	}
+
+	.explore_bar.minimized > label > .explore_title {
+		font-size: 20px;
+		transition: font-size 0.65s cubic-bezier(0.94, -0.01, 0.56, 0.99);
 	}
 
 	.country_option {
@@ -68,7 +78,7 @@
 		background-color: #e7e7e7;
 		border-radius: 10px;
 		padding: 10px 40px 10px 10px;
-		font-size: 34px;
+		font-size: 20px;
 		color: #000000;
 		text-transform: uppercase;
 		cursor: pointer;
@@ -76,12 +86,12 @@
 		outline: none;
 		min-width: 120px;
 		width: auto;
+		max-width: 200px;
 		position: relative;
 		background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
 		background-repeat: no-repeat;
 		background-position: right 10px center;
 		background-size: 12px auto;
-		width: 300px;
 	}
 
 	/* Customizable select styling */

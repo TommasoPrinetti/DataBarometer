@@ -1,34 +1,66 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { Canvas, T } from '@threlte/core';
 	import Planet from '$lib/components/planet.svelte';
 	import Card from '$lib/components/card.svelte';
 	import Explore from '$lib/components/explore.svelte';
 	import { isPlanetReady } from '$lib/dataset/stores';
+	import Lenis from 'lenis';
+	import 'lenis/dist/lenis.css';
+	import gdBarometerLogo from '$lib/assets/globaldatabarometer.png';
+
 	/** @type {import('./$types').PageProps} */
 	let { data } = $props();
 
+	let exploreWrapper: HTMLElement;
+	let lenis: Lenis;
 	onMount(async () => {
-		//console.log(await data.data);
+		lenis = new Lenis({
+			autoRaf: true,
+			smoothWheel: true,
+			duration: 1.2,
+			easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+			orientation: 'vertical',
+			touchMultiplier: 2,
+			wheelMultiplier: 1,
+			infinite: false
+		});
+
+		lenis.stop();
+	});
+
+	$effect(() => {
+		if ($isPlanetReady) {
+			setTimeout(() => {
+				lenis.start();
+			}, 200);
+		} else {
+			lenis.stop();
+		}
 	});
 </script>
 
 <header>
 	<div>
 		<button>
-			<p>History</p>
-		</button>
-		<button>
-			<p>Highlights</p>
+			<img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" />
 		</button>
 	</div>
 
 	<div>
-		<button>
-			<p>Learn more ↗︎</p>
+		<button
+			onclick={() => {
+				window.open('https://globaldatabarometer.org/', '_blank');
+			}}
+		>
+			<p>Learn more about the Global Data Barometer↗︎</p>
 		</button>
-		<button>
-			<p>Global Data Barometer is independent</p>
+		<button
+			onclick={() => {
+				window.open('https://globaldatabarometer.org/open-data/', '_blank');
+			}}
+		>
+			<p>Data sources</p>
 		</button>
 	</div>
 </header>
@@ -51,15 +83,24 @@
 			/>
 		</Canvas>
 	</div>
+	<button
+		class="explore_button"
+		onclick={() =>
+			lenis.scrollTo(exploreWrapper, {
+				duration: 1.2,
+				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+			})}
+	>
+		<h2>Explore the dataset</h2>
+	</button>
 </section>
 
-<section class="explore_wrapper">
+<section class="explore_wrapper" bind:this={exploreWrapper}>
 	<Explore countriesData={data.data} />
+	{#each data.data as country, index}
+		<Card countryData={country} isSmall={false} {index} />
+	{/each}
 </section>
-
-{#each data.data as country}
-	<Card countryData={country} isSmall={false} />
-{/each}
 
 <style>
 	:global(*) {
@@ -129,7 +170,7 @@
 		height: 100vh;
 		position: relative;
 		z-index: 5;
-		background-color: transparent;
+		background-color: rgba(255, 255, 255, 0.1);
 	}
 
 	header {
@@ -190,6 +231,16 @@
 		transition:
 			clip-path 1.2s cubic-bezier(0.165, 0.84, 0.44, 1),
 			transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.gd_barometer_logo {
+		width: 100px;
+		height: auto;
+		z-index: 2;
 	}
 
 	:global(.hero_title.out) {
@@ -239,10 +290,6 @@
 
 	h1 > span {
 		font-style: italic;
-		transition: all 0.3s ease-in-out;
-	}
-
-	h1 > span:hover {
 		text-decoration: underline;
 		text-decoration-thickness: 4px;
 		text-underline-offset: 4px;
@@ -265,5 +312,40 @@
 		font-size: 16px;
 		line-height: auto;
 		font-weight: 200;
+	}
+
+	.explore_button {
+		position: fixed;
+		bottom: 2%;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 1000;
+		background-color: rgba(255, 255, 255, 0);
+		color: #fff;
+		border: 0px solid #fff;
+		padding: 10px 20px;
+		border-radius: 20px;
+		cursor: pointer;
+		transition: all 0.3s ease-in-out;
+		font-size: 16px;
+		color: white;
+		filter: blur(1px);
+		transition: filter 0.3s ease-in-out;
+	}
+
+	.explore_button:hover {
+		filter: blur(0px);
+		transition:
+			filter 0.3s ease-in-out,
+			backdrop-filter 1.8s ease-in-out,
+			background-color 1.8s ease-in-out,
+			border 1.8s ease-in-out;
+		transition-delay: 0.08s;
+		background-color: rgba(142, 142, 142, 0.62);
+	}
+
+	.explore_button:active {
+		transform: translateX(-50%) scale(0.98);
+		transition: transform 0.1s ease-in-out;
 	}
 </style>

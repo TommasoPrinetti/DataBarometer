@@ -5,6 +5,7 @@
 	import * as THREE from 'three';
 	import Card from '$lib/components/card.svelte';
 	import { isPlanetReady } from '$lib/dataset/stores';
+	import { DirectionalLightHelper } from 'three';
 
 	export let earthMap: string;
 	export let normalMap: string;
@@ -18,6 +19,7 @@
 
 	let sphereYPosition = -0.5;
 	let globeRadius = 3;
+	let loadFlag = false;
 
 	function latLongToCartesian(
 		lat: number,
@@ -54,6 +56,9 @@
 	const surfaceTexture = useTexture(earthMap, {
 		transform: (t) => {
 			t.anisotropy = 16;
+			t.colorSpace = THREE.NoColorSpace;
+			t.wrapS = THREE.RepeatWrapping;
+			t.wrapT = THREE.RepeatWrapping;
 			return t;
 		}
 	});
@@ -61,6 +66,7 @@
 	const normalMapTexture = useTexture(normalMap, {
 		transform: (t) => {
 			t.anisotropy = 16;
+			t.colorSpace = THREE.NoColorSpace;
 			return t;
 		}
 	});
@@ -68,35 +74,31 @@
 	const specularMapTexture = useTexture(specularMap, {
 		transform: (t) => {
 			t.anisotropy = 16;
+			t.colorSpace = THREE.NoColorSpace;
 			return t;
 		}
 	});
 
+	let cards: HTMLElement[] = [];
+
 	const texturesPromise = Promise.all([surfaceTexture, normalMapTexture, specularMapTexture]);
 
 	onMount(() => {
-		surfaceTexture.then((t) => {
-			t.colorSpace = THREE.NoColorSpace;
-		});
-		normalMapTexture.then((t) => {
-			t.colorSpace = THREE.NoColorSpace;
-		});
-
-		specularMapTexture.then((t) => {
-			t.colorSpace = THREE.NoColorSpace;
-		});
-
 		texturesPromise.then(() => {
 			setTimeout(() => {
 				isPlanetReady.set(true);
-				const markers: HTMLElement[] = Array.from(document.querySelectorAll('.markers'));
-				markers.forEach((m, i) => {
-					m.style.transitionDelay = `${i * 0.1}s`;
-					m.style.transform = 'scale(1)';
-					m.style.opacity = '1';
+
+				cards = Array.from(document.querySelectorAll('.markers'));
+
+				cards.forEach((c, i) => {
+					c.style.transitionDelay = `${i * 0.1 + 0.5}s`;
+					c.classList.add('show');
 				});
+
+				setTimeout(() => {
+					loadFlag = true;
+				}, 1000);
 			}, 200);
-			console.log('texturesPromise', $isPlanetReady);
 		});
 	});
 </script>
@@ -127,9 +129,21 @@
 		/>
 	</T.PerspectiveCamera>
 
-	<T.AmbientLight intensity={0.4} />
-	<T.DirectionalLight position={[5, 5, 5]} intensity={0.8} />
-	<T.DirectionalLight position={[-5, -5, -5]} intensity={0.3} />
+	<T.AmbientLight intensity={5} color={0xffffff} />
+	<!-- <T.DirectionalLight
+		position={[0, 0, -100]}
+		intensity={200}
+		color={0xffffff}
+		castShadow={true}
+		lookat={[0, 0, 0]}
+	/>
+	<T.DirectionalLight
+		position={[5, 5, 20]}
+		intensity={2}
+		color={0xffffff}
+		castShadow={true}
+		lookat={[0, 0, 0]}
+	/>!-->
 
 	{#await texturesPromise then [earthMap, normalMap, specularMap]}
 		<T.Mesh
@@ -139,11 +153,10 @@
 			position={[0, sphereYPosition, 0]}
 			rotation={[0, 0, 0]}
 		>
-			<T.SphereGeometry args={[globeRadius, 32, 32]} bindthis={(el: any) => (globeGeometry = el)} />
+			<T.SphereGeometry args={[globeRadius, 64, 64]} bindthis={(el: any) => (globeGeometry = el)} />
 			<T.MeshStandardMaterial
 				map={earthMap}
 				roughnessMap={specularMap}
-				metalnessMap={specularMap}
 				{normalMap}
 				normalScale={[0.3, 0.3]}
 			/>
@@ -158,10 +171,12 @@
 				occlude="raycast"
 				transform={true}
 				zIndexRange={[0, 1000]}
+				castShadow={true}
 			>
 				<Card
 					countryData={countriesData.find((c: any) => c.CountryName === m.territoryName)}
 					isSmall={true}
+					index={i}
 				/>
 			</HTML>
 		{/each}
@@ -170,9 +185,11 @@
 
 <style>
 	:global(.markers) {
-		transform: scale(0);
+		transform: scale(1);
 		opacity: 1;
-		transition: all 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+		transition:
+			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 	}
 
 	.canvas-container {

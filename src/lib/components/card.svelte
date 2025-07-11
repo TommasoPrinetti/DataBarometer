@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import gdBarometerLogo from '$lib/assets/Globaldata.png';
 	import QuestionMark from '$lib/components/question_mark.svelte';
 	import terrainTest from '$lib/assets/terrain_test.png';
@@ -15,10 +15,42 @@
 
 	export let countryData;
 	export let isSmall = false;
+	export let index: number;
 </script>
 
 {#if $isCurrentCountry === countryData.CountryName && !isSmall}
-	<div class="card_container" transition:slide={{ duration: 300 }}>
+	<div
+		class="card_container"
+		in:slide={{
+			duration: 1500,
+			axis: 'y',
+			delay: 1000,
+			easing: (t) =>
+				t < 0
+					? 0
+					: t > 1
+						? 1
+						: t === 1
+							? 1
+							: t < 0.5
+								? 4 * t * t * t
+								: (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
+		}}
+		out:slide={{
+			duration: 1500,
+			axis: 'y',
+			easing: (t) =>
+				t < 0
+					? 0
+					: t > 1
+						? 1
+						: t === 1
+							? 1
+							: t < 0.5
+								? 4 * t * t * t
+								: (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
+		}}
+	>
 		{#if !$isChartMode}
 			<div class="card_columns" id="terrain_column">
 				<img src={terrainTest} alt="Tunisia" class="terrain_image" />
@@ -45,7 +77,7 @@
 							<div class="data_triple_grid">
 								{#each globalOverview as item}
 									<div class="number_container">
-										<h3>{item.displayName}<QuestionMark /></h3>
+										<h3>{item.displayName}<QuestionMark type={item.displayName} /></h3>
 										<p>{countryData[item.dataKey]}<span>/{item.maxValue}</span></p>
 									</div>
 								{/each}
@@ -56,7 +88,7 @@
 							<div class="data_triple_grid">
 								{#each threePillars as pillar}
 									<div class="number_container">
-										<h3>{pillar.displayName}<QuestionMark /></h3>
+										<h3>{pillar.displayName}<QuestionMark type={pillar.displayName} /></h3>
 										<p>{countryData[pillar.dataKey]}<span>/{pillar.maxValue}</span></p>
 									</div>
 								{/each}
@@ -67,7 +99,7 @@
 							<div class="data_triple_grid">
 								{#each evaluationClusters as cluster}
 									<div class="number_container">
-										<h3>{cluster.displayName}<QuestionMark /></h3>
+										<h3>{cluster.displayName}<QuestionMark type={cluster.displayName} /></h3>
 										<p>{countryData[cluster.dataKey]}<span>/{cluster.maxValue}</span></p>
 									</div>
 								{/each}
@@ -94,20 +126,20 @@
 				</div>
 				<div class="chart_header">
 					<div class="number_container">
-						<h3>Population<QuestionMark /></h3>
+						<h3>Population<QuestionMark type="Population" /></h3>
 						<p>{countryData.Population} people</p>
 					</div>
 					<div class="number_container">
-						<h3>Gov. form<QuestionMark /></h3>
+						<h3>Gov. form<QuestionMark type="Gov. form" /></h3>
 						<p>{countryData.GovForm}</p>
 					</div>
 					<div class="number_container">
-						<h3>GDP<QuestionMark /></h3>
+						<h3>GDP<QuestionMark type="GDP" /></h3>
 						<p>${countryData.Gdp} million</p>
 					</div>
 					{#each globalOverview as item}
 						<div class="number_container">
-							<h3>{item.displayName}<QuestionMark /></h3>
+							<h3>{item.displayName}<QuestionMark type={item.displayName} /></h3>
 							<p>{countryData[item.dataKey]}<span>/{item.maxValue}</span></p>
 						</div>
 					{/each}
@@ -116,7 +148,7 @@
 					<div class="single_column_chart">
 						<div class="column_header">
 							<h2>Three main pillars</h2>
-							<button onclick={() => isWorstMode.set(!$isWorstMode)}>
+							<button class="worst_best_button" onclick={() => isWorstMode.set(!$isWorstMode)}>
 								{#if $isWorstMode}
 									<p>worst</p>
 								{:else}
@@ -134,7 +166,7 @@
 										isVertical={true}
 									/>
 									<div class="number_container">
-										<h3>{pillar.displayName}<QuestionMark /></h3>
+										<h3>{pillar.displayName}<QuestionMark type={pillar.displayName} /></h3>
 										<p>{countryData[pillar.dataKey]}<span>/{pillar.maxValue}</span></p>
 									</div>
 								</div>
@@ -144,7 +176,7 @@
 					<div class="single_column_chart">
 						<div class="column_header">
 							<h2>Eight evaluation clusters</h2>
-							<button onclick={() => isWorstMode.set(!$isWorstMode)}>
+							<button class="worst_best_button" onclick={() => isWorstMode.set(!$isWorstMode)}>
 								{#if $isWorstMode}
 									<p>worst</p>
 								{:else}
@@ -156,7 +188,7 @@
 							{#each evaluationClusters as cluster}
 								<div class="single_chart_container">
 									<div class="number_container">
-										<h3>{cluster.displayName}<QuestionMark /></h3>
+										<h3>{cluster.displayName}<QuestionMark type={cluster.displayName} /></h3>
 										<p>{countryData[cluster.dataKey]}<span>/{cluster.maxValue}</span></p>
 									</div>
 									<BarChart
@@ -184,7 +216,7 @@
 
 		<button
 			class="side_button"
-			aria-label="Refresh"
+			aria-label="Swap"
 			onclick={() => {
 				isChartMode.set(!$isChartMode);
 			}}
@@ -197,8 +229,8 @@
 		</button>
 	</div>
 {:else if isSmall}
-	<div class="small_card_container">
-		<div class="small_card_sphere"></div>
+	<div class="small_card_sphere" style="transition-delay: {index * 0.1}s;"></div>
+	<div class="small_card_container" style="transition-delay: {index * 0.1 + 1.5}s;">
 		<div class="small_map">
 			<img src={terrainTest} alt="Map" />
 		</div>
@@ -262,13 +294,15 @@
 
 	.side_button:nth-of-type(2) {
 		transform: translateY(110%) scale(1);
-		background-color: rgb(52, 52, 52);
+		background-color: rgb(255, 239, 65);
+		fill: black;
+		transition: transform 0.8s ease-in-out filter 0.3s ease-in-out background-color 0.3s ease-in-out;
 	}
 
 	.side_button:nth-of-type(2):hover {
-		background-color: rgb(62, 62, 62);
+		background-color: rgb(192, 180, 48);
 		transform: translateY(110%) scale(1) rotate(180deg);
-		transition: transform 0.8s ease-in-out filter 0.1s ease-in-out;
+		transition: transform 0.8s ease-in-out filter 0.3s ease-in-out background-color 0.3s ease-in-out;
 	}
 
 	.side_button:nth-of-type(2):active {
@@ -304,7 +338,7 @@
 	}
 
 	.card_container {
-		position: fixed;
+		position: absolute;
 		bottom: 50%;
 		left: 50%;
 		transform: translate(-50%, 55%) scale(0.8);
@@ -396,6 +430,7 @@
 
 	.number_container {
 		width: 100%;
+		max-width: 130px;
 		height: fit-content;
 		padding-top: 2px;
 		padding-bottom: 2px;
@@ -535,6 +570,7 @@
 
 	.dx_column {
 		flex-direction: column;
+		align-items: center;
 	}
 
 	.single_chart_container {
@@ -613,6 +649,18 @@
 		border-radius: 6px;
 		position: static;
 		font-size: 8px;
+		backface-visibility: hidden;
+		-moz-backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+		-ms-backface-visibility: hidden;
+		user-select: none;
+		pointer-events: none;
+		opacity: 0;
+		transform: scale(0);
+		transition:
+			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+		transition-delay: 3s;
 	}
 
 	.small_card_sphere {
@@ -623,6 +671,11 @@
 		position: absolute;
 		top: -9%;
 		left: -9%;
+		opacity: 0;
+		transform: scale(0);
+		transition:
+			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 	}
 
 	:global(.small_card_container.minimized) {
@@ -653,7 +706,6 @@
 		justify-content: space-between;
 		display: flex;
 		flex-direction: column;
-		color: white;
 	}
 
 	.small_header {
@@ -684,5 +736,52 @@
 
 	.small_header p {
 		font-size: 12px;
+	}
+
+	.worst_best_button {
+		width: fit-content;
+		height: fit-content;
+		border: 1px solid white;
+		border-radius: 10px;
+		padding-right: 10px;
+		padding-left: 10px;
+	}
+
+	.worst_best_button:hover {
+		background-color: rgb(50, 50, 50);
+		color: rgb(255, 255, 255);
+		transform: scale(1.05);
+		transition: transform 0.1s ease-in-out;
+	}
+
+	.worst_best_button:active {
+		background-color: white;
+		color: black;
+		transform: scale(0.95);
+		transition: transform 0.1s ease-in-out;
+	}
+
+	.worst_best_button:active > p {
+		color: rgb(0, 0, 0);
+	}
+
+	:global(.markers.show > .small_card_sphere) {
+		transition-delay: 0s;
+		transform: scale(1);
+		opacity: 1;
+		transition:
+			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+		transition-delay: 0s;
+	}
+
+	:global(.markers.show > .small_card_container) {
+		transition-delay: 3s;
+		transform: scale(1);
+		opacity: 1;
+		transition:
+			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+		transition-delay: 1.5s;
 	}
 </style>
