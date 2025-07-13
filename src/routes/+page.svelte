@@ -4,7 +4,7 @@
 	import Planet from '$lib/components/planet.svelte';
 	import Card from '$lib/components/card.svelte';
 	import Explore from '$lib/components/explore.svelte';
-	import { isPlanetReady } from '$lib/dataset/stores';
+	import { isPlanetReady } from '$lib/stores.js';
 	import Lenis from 'lenis';
 	import 'lenis/dist/lenis.css';
 	import gdBarometerLogo from '$lib/assets/globaldatabarometer.png';

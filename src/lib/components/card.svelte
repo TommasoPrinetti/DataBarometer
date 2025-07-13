@@ -10,7 +10,7 @@
 		globalOverview,
 		threePillars,
 		evaluationClusters
-	} from '$lib/dataset/stores';
+	} from '$lib/stores.js';
 	import { slide } from 'svelte/transition';
 
 	export let countryData;

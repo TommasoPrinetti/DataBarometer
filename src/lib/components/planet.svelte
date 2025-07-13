@@ -4,7 +4,7 @@
 	import { useTexture, OrbitControls, HTML } from '@threlte/extras';
 	import * as THREE from 'three';
 	import Card from '$lib/components/card.svelte';
-	import { isPlanetReady } from '$lib/dataset/stores';
+	import { isPlanetReady } from '$lib/stores.js';
 
 	export let earthMap: string;
 	export let normalMap: string;

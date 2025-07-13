@@ -1,12 +1,10 @@
 <script lang="ts">
-	import * as d3 from 'd3';
-
 	export let length: number;
 	export let maxValue: number;
 	export let flag: string;
 	export let isVertical: boolean = false;
 
-	import { isWorstMode } from '$lib/dataset/stores';
+	import { isWorstMode } from '$lib/stores.js';
 </script>
 
 <div class="chart">

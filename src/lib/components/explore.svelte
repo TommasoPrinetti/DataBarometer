@@ -1,5 +1,5 @@
 <script lang="js">
-	import { isCurrentCountry, isPlanetReady } from '$lib/dataset/stores';
+	import { isCurrentCountry, isPlanetReady } from '$lib/stores.js';
 	import { fade, scale } from 'svelte/transition';
 
 	export let countriesData;

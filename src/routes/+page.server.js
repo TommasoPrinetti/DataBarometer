@@ -52,7 +52,7 @@ let coordinates = [
 ];
 
 async function parseCSV() {
-	const fileContent = await readFile('src/lib/dataset/Dataset.csv', 'utf8');
+	const fileContent = await readFile('static/dataset/Dataset.csv', 'utf8');
 	const result = Papa.parse(fileContent, {
 		header: true,
 		skipEmptyLines: true,
