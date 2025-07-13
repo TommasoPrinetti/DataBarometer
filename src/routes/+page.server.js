@@ -1,4 +1,6 @@
 import { readFile } from 'fs/promises';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import Papa from 'papaparse';
 
 import earthMap from '$lib/assets/8k.webp?url';
@@ -52,7 +54,10 @@ let coordinates = [
 ];
 
 async function parseCSV() {
-	const fileContent = await readFile('static/dataset/Dataset.csv', 'utf8');
+	const __filename = fileURLToPath(import.meta.url);
+	const __dirname = dirname(__filename);
+	const csvPath = join(__dirname, '../../../static/dataset/Dataset.csv');
+	const fileContent = await readFile(csvPath, 'utf8');
 	const result = Papa.parse(fileContent, {
 		header: true,
 		skipEmptyLines: true,
