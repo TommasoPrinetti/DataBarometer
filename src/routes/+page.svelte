@@ -437,8 +437,10 @@
 		header {
 			align-items: center;
 			justify-content: center;
-			padding: 0px 10px;
-			top: 2%;
+			padding: 20px;
+			top: 0%;
+			background-color: #e2e2e2;
+			border-radius: 0px 0px 10px 10px;
 		}
 
 		header > div:nth-child(2),
@@ -448,9 +450,7 @@
 
 		header > div:nth-child(1) {
 			width: 40%;
-			border: 1px solid black;
 			border-radius: 10px;
-			padding: 5px 10px 0px 10px;
 		}
 
 		header > div:nth-child(1) > button,
