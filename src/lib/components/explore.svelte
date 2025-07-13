@@ -1,6 +1,7 @@
 <script lang="js">
 	import { isCurrentCountry, isPlanetReady } from '$lib/stores.js';
-	import { fade, scale } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
+	import Footer from '$lib/components/footer.svelte';
 
 	export let countriesData;
 </script>
@@ -33,6 +34,8 @@
 			<h1 class="explore_title">?</h1>
 		</label>
 	</div>
+
+	<Footer />
 {/if}
 
 <style>

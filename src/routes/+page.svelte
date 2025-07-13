@@ -55,7 +55,7 @@
 				window.open('https://globaldatabarometer.org/', '_blank');
 			}}
 		>
-			<p>Learn more about the Global Data Barometer↗︎</p>
+			<p>Learn more about the Global Data Barometer ↗︎</p>
 		</button>
 		<button
 			onclick={() => {
@@ -78,6 +78,17 @@
 		</h1>
 	</div>
 
+	<button
+		class="explore_button"
+		onclick={() =>
+			lenis.scrollTo(exploreWrapper, {
+				duration: 1.2,
+				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+			})}
+	>
+		<h2>Explore the dataset</h2>
+	</button>
+
 	<div class="planet-wrapper" class:out={$isPlanetReady}>
 		<Canvas>
 			<Planet
@@ -89,16 +100,6 @@
 			/>
 		</Canvas>
 	</div>
-	<button
-		class="explore_button"
-		onclick={() =>
-			lenis.scrollTo(exploreWrapper, {
-				duration: 1.2,
-				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-			})}
-	>
-		<h2>Explore the dataset</h2>
-	</button>
 </section>
 
 <section class="explore_wrapper" bind:this={exploreWrapper}>
@@ -130,6 +131,7 @@
 		position: relative;
 		scroll-snap-type: y mandatory;
 		scroll-behavior: smooth;
+		scroll-timeline: --page-scroll block;
 	}
 
 	.hero_section {
@@ -143,6 +145,17 @@
 		overflow: hidden;
 		scroll-snap-align: start;
 		scroll-snap-type: y mandatory;
+	}
+
+	@keyframes exploreButtonParallax {
+		from {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		to {
+			opacity: 0;
+			transform: translateY(-20px);
+		}
 	}
 
 	:global(.planet-wrapper) {
@@ -179,7 +192,7 @@
 		width: 100%;
 		height: 100vh;
 		position: relative;
-		z-index: 5;
+		z-index: 10;
 		background-color: rgba(255, 255, 255, 0.1);
 		scroll-snap-align: start;
 		scroll-snap-type: y mandatory;
@@ -333,7 +346,7 @@
 		position: fixed;
 		bottom: 2%;
 		left: 50%;
-		transform: translateX(-50%);
+		transform: translate(-50%, 0%);
 		z-index: 1000;
 		background-color: rgba(255, 255, 255, 0);
 		color: #fff;
@@ -346,6 +359,10 @@
 		color: white;
 		filter: blur(1px);
 		transition: filter 0.3s ease-in-out;
+		z-index: 2;
+		animation: exploreButtonParallax linear;
+		animation-timeline: --page-scroll;
+		animation-range: 0% 50%;
 	}
 
 	.explore_button:hover {
@@ -376,7 +393,7 @@
 		.hero_title {
 			height: fit-content;
 			width: 100%;
-			padding: 8vh 10px 0px 10px;
+			padding: 10vh 10px 0px 10px;
 		}
 
 		.explore_button {
@@ -421,8 +438,7 @@
 			align-items: center;
 			justify-content: center;
 			padding: 0px 10px;
-			bottom: 1%;
-			top: auto;
+			top: 2%;
 		}
 
 		header > div:nth-child(2),
@@ -431,7 +447,10 @@
 		}
 
 		header > div:nth-child(1) {
-			width: 50%;
+			width: 40%;
+			border: 1px solid black;
+			border-radius: 10px;
+			padding: 5px 10px 0px 10px;
 		}
 
 		header > div:nth-child(1) > button,
