@@ -732,6 +732,7 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		color: white;
 	}
 
 	.small_header p {
@@ -778,9 +779,10 @@
 	:global(.markers.show > .small_card_container) {
 		transition-delay: 3s;
 		transform: scale(1);
+		transform-origin: left top;
 		opacity: 1;
 		transition:
-			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+			transform 1s cubic-bezier(0.165, 0.84, 0.44, 1),
 			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 		transition-delay: 1.5s;
 	}

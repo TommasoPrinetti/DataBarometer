@@ -1,26 +1,39 @@
 <script lang="js">
-	import { isCurrentCountry } from '$lib/dataset/stores';
+	import { isCurrentCountry, isPlanetReady } from '$lib/dataset/stores';
+	import { fade, scale } from 'svelte/transition';
 
 	export let countriesData;
 </script>
 
-<div class="explore_bar" class:minimized={$isCurrentCountry}>
-	<label for="country-select">
-		<h1 class="explore_title">how's the <i>data</i> situation in</h1>
-	</label>
+{#if $isPlanetReady}
+	<div
+		class="explore_bar"
+		class:minimized={$isCurrentCountry}
+		in:fade={{ duration: 1000, delay: 1000, easing: (t) => t * t }}
+		out:fade={{ duration: 1000, delay: 1000, easing: (t) => t * t }}
+	>
+		<label for="country-select">
+			<h1 class="explore_title" id="mobile_show">
+				View this website on a <b>larger device 🖥️</b> to enjoy the full experience
+			</h1>
+			<h1 class="explore_title" id="desktop_show">
+				how's the <i>data</i> situation in
+			</h1>
+		</label>
 
-	<select id="country-select" class="selector" bind:value={$isCurrentCountry}>
-		{#each countriesData as countryData}
-			<option class="country_option" value={countryData.CountryName}>
-				{countryData.Flag}
-				{countryData.CountryName}
-			</option>
-		{/each}
-	</select>
-	<label for="country-select">
-		<h1 class="explore_title">?</h1>
-	</label>
-</div>
+		<select id="country-select" class="selector" bind:value={$isCurrentCountry}>
+			{#each countriesData as countryData}
+				<option class="country_option" value={countryData.CountryName}>
+					{countryData.Flag}
+					{countryData.CountryName}
+				</option>
+			{/each}
+		</select>
+		<label for="country-select" id="question">
+			<h1 class="explore_title">?</h1>
+		</label>
+	</div>
+{/if}
 
 <style>
 	.explore_bar {
@@ -92,9 +105,26 @@
 		background-repeat: no-repeat;
 		background-position: right 10px center;
 		background-size: 12px auto;
+		transition: all 1s ease-in-out;
+		transition-delay: 0.5s;
 	}
 
-	/* Customizable select styling */
+	:global(.explore_bar.minimized .selector) {
+		color: #000000;
+		background-color: #e7e7e7;
+		border: 1px solid #000000;
+		transition: all 0.2s ease-in-out;
+		font-size: 18px;
+		transition: all 0.65s cubic-bezier(0.94, -0.01, 0.56, 0.99);
+		transition-delay: 0.25s;
+	}
+
+	.selector:hover {
+		background-color: #d7d7d7;
+		border: 1px solid #000000;
+		transition: border 0.2s ease-in-out background-color 0.2s ease-in-out;
+	}
+
 	:global(::picker(select)) {
 		background: white;
 		border: 1px solid #ccc;
@@ -132,5 +162,45 @@
 		content: '▼';
 		margin-left: 8px;
 		transition: transform 0.2s;
+	}
+
+	@media (max-width: 768px) {
+		.explore_bar {
+			padding: 10px 15px 10px 15px;
+			flex-direction: column;
+			row-gap: 10px;
+			width: 35ch;
+		}
+
+		.explore_title {
+			font-size: 16px;
+			font-weight: 400;
+			font-family: 'Rethink Sans', sans-serif;
+			color: #000000;
+			text-transform: uppercase;
+			white-space: normal;
+			transition: font-size 0.65s cubic-bezier(0.94, -0.01, 0.56, 0.99) 1.45s;
+			will-change: font-size;
+		}
+
+		.explore_bar.minimized {
+			top: 8%;
+			transform: translate(-50%, 0%);
+			padding: 7px 10px 7px 10px;
+			transition: all 1.5s cubic-bezier(0.94, -0.01, 0.56, 0.99) 0.45s;
+		}
+
+		.explore_bar.minimized > label > .explore_title {
+			font-size: 20px;
+			transition: font-size 0.65s cubic-bezier(0.94, -0.01, 0.56, 0.99);
+		}
+
+		.selector {
+			display: none;
+		}
+
+		#question {
+			display: none;
+		}
 	}
 </style>

@@ -5,7 +5,6 @@
 	import * as THREE from 'three';
 	import Card from '$lib/components/card.svelte';
 	import { isPlanetReady } from '$lib/dataset/stores';
-	import { DirectionalLightHelper } from 'three';
 
 	export let earthMap: string;
 	export let normalMap: string;

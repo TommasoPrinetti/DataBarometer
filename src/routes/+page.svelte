@@ -13,7 +13,9 @@
 	let { data } = $props();
 
 	let exploreWrapper: HTMLElement;
+	let heroSection: HTMLElement;
 	let lenis: Lenis;
+
 	onMount(async () => {
 		lenis = new Lenis({
 			autoRaf: true,
@@ -64,10 +66,14 @@
 		</button>
 	</div>
 </header>
-<section class="hero_section">
+<section class="hero_section" bind:this={heroSection}>
 	<div class="hero_title" class:out={$isPlanetReady}>
-		<h1>
-			Governments produce a <span>lot of data</span>,<br />but is it actually
+		<h1 id="desktop_show">
+			Governments produce <span>a lot of data</span>, <br /> but is it actually
+			<span>open and available?</span>
+		</h1>
+		<h1 id="mobile_show">
+			Governments produce <span>a lot of data</span>, but is it actually
 			<span>open and available?</span>
 		</h1>
 	</div>
@@ -122,6 +128,8 @@
 		align-items: center;
 		justify-content: center;
 		position: relative;
+		scroll-snap-type: y mandatory;
+		scroll-behavior: smooth;
 	}
 
 	.hero_section {
@@ -131,8 +139,10 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-start;
 		overflow: hidden;
+		scroll-snap-align: start;
+		scroll-snap-type: y mandatory;
 	}
 
 	:global(.planet-wrapper) {
@@ -171,6 +181,8 @@
 		position: relative;
 		z-index: 5;
 		background-color: rgba(255, 255, 255, 0.1);
+		scroll-snap-align: start;
+		scroll-snap-type: y mandatory;
 	}
 
 	header {
@@ -220,13 +232,10 @@
 	}
 
 	.hero_title {
-		position: absolute;
-		top: 10%;
-		left: 50%;
-		transform: translate(-50%, -100%);
-		width: max-content;
+		position: relative;
+		z-index: 2; /* above planet-wrapper (z-index 1) */
+		width: 100%;
 		z-index: 2;
-		transform-origin: center;
 		clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
 		transition:
 			clip-path 1.2s cubic-bezier(0.165, 0.84, 0.44, 1),
@@ -235,6 +244,10 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		align-self: center;
+		padding-top: 10%;
+		color: black;
+		background-color: transparent;
 	}
 
 	.gd_barometer_logo {
@@ -245,7 +258,6 @@
 
 	:global(.hero_title.out) {
 		clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 0);
-		transform: translate(-50%, 0);
 		transition:
 			clip-path 1.2s cubic-bezier(0.165, 0.84, 0.44, 1),
 			transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -258,6 +270,9 @@
 		transition:
 			clip-path 1.2s cubic-bezier(0.165, 0.84, 0.44, 1),
 			transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+		color: black;
+		background-color: transparent;
+		overflow: visible;
 	}
 
 	:global(.hero_title.out > h1 > span) {
@@ -269,14 +284,14 @@
 			transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
 	}
 
-	h1 {
+	:global(h1) {
 		font-size: 48px;
 		line-height: auto;
 		font-weight: 200;
 		font-style: normal;
 		text-transform: uppercase;
 		line-height: 113.372%;
-		letter-spacing: -2.4px;
+		letter-spacing: -1px;
 		user-select: text;
 		-webkit-user-select: text;
 		-moz-user-select: text;
@@ -347,5 +362,106 @@
 	.explore_button:active {
 		transform: translateX(-50%) scale(0.98);
 		transition: transform 0.1s ease-in-out;
+	}
+
+	:global(#mobile_show) {
+		display: none;
+	}
+
+	:global(#desktop_show) {
+		display: block;
+	}
+
+	@media (max-width: 768px) {
+		.hero_title {
+			height: fit-content;
+			width: 100%;
+			padding: 8vh 10px 0px 10px;
+		}
+
+		.explore_button {
+			display: none;
+		}
+
+		:global(body, html) {
+			height: 100%;
+			position: relative;
+		}
+
+		.hero_section {
+			height: 100vh;
+			max-height: 100%;
+			position: relative;
+		}
+
+		:global(h1) {
+			font-size: 20px;
+			font-weight: 200;
+			font-style: normal;
+			text-transform: uppercase;
+			line-height: 113.372%;
+			letter-spacing: -1px;
+			text-align: center;
+		}
+
+		h1 > span {
+			font-style: italic;
+			text-decoration: none;
+			text-decoration-thickness: 4px;
+			text-underline-offset: 4px;
+			transition: all 0.3s ease-in-out;
+		}
+
+		.hero_title > h1 > span {
+			font-style: normal;
+			clip-path: none;
+		}
+
+		header {
+			align-items: center;
+			justify-content: center;
+			padding: 0px 10px;
+			bottom: 1%;
+			top: auto;
+		}
+
+		header > div:nth-child(2),
+		header > div:nth-child(3) {
+			display: none;
+		}
+
+		header > div:nth-child(1) {
+			width: 50%;
+		}
+
+		header > div:nth-child(1) > button,
+		header > div:nth-child(1) > button > img {
+			width: 100%;
+		}
+
+		.explore_wrapper {
+			display: auto;
+			position: absolute;
+		}
+
+		.planet-wrapper {
+			filter: blur(0px);
+			transition-delay: 6s;
+			transition: filter 2s ease-in-out;
+		}
+
+		.planet-wrapper.out {
+			filter: blur(2px);
+			transition-delay: 3s;
+			transition: filter 2s ease-in-out;
+		}
+
+		:global(#mobile_show) {
+			display: block;
+		}
+
+		:global(#desktop_show) {
+			display: none;
+		}
 	}
 </style>

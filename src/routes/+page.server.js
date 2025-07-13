@@ -1,11 +1,11 @@
 import { readFile } from 'fs/promises';
 import Papa from 'papaparse';
 
-import earthMap from '$lib/assets/8k.jpg?url';
-import normalMap from '$lib/assets/8k_normal.png?url';
-import specularMap from '$lib/assets/8k_specular.png?url';
+import earthMap from '$lib/assets/8k.webp?url';
+import normalMap from '$lib/assets/8k_normal.webp?url';
+import specularMap from '$lib/assets/8k_specular.webp?url';
 
-export let coordinates = [
+let coordinates = [
 	{ territoryName: 'Angola', lat: -12.0, lon: 17.5 },
 	{ territoryName: 'Argentina', lat: -34.0, lon: -64.0 },
 	{ territoryName: 'Bahamas', lat: 25.0, lon: -77.4 },
