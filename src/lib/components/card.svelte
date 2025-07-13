@@ -1,5 +1,5 @@
 <script lang="ts">
-	import gdBarometerLogo from '$lib/assets/Globaldata.png';
+	import gdBarometerLogo from '$lib/assets/globaldatabarometer.png';
 	import QuestionMark from '$lib/components/question_mark.svelte';
 	import terrainTest from '$lib/assets/terrain_test.png';
 	import BarChart from '$lib/components/BarChart.svelte';
@@ -12,10 +12,59 @@
 		evaluationClusters
 	} from '$lib/stores.js';
 	import { slide } from 'svelte/transition';
+	import html2canvas from 'html2canvas';
 
-	export let countryData;
+	export let countryData: any;
 	export let isSmall = false;
 	export let index: number;
+
+	let cardContainer: HTMLElement | null;
+
+	async function exportAsJPG() {
+		if (!cardContainer) return;
+
+		const questionMarks = cardContainer.querySelectorAll('.question_mark_svg');
+		const downloadButton = cardContainer.querySelector('.download_button');
+
+		const prevDisplay: string[] = [];
+
+		questionMarks.forEach((el, i) => {
+			prevDisplay[i] = (el as HTMLElement).style.display;
+			(el as HTMLElement).style.display = 'none';
+		});
+
+		if (downloadButton) {
+			prevDisplay[0] = (downloadButton as HTMLElement).style.display;
+			(downloadButton as HTMLElement).style.display = 'none';
+		}
+
+		try {
+			const canvas = await html2canvas(cardContainer, {
+				backgroundColor: '#000000',
+				scale: 2,
+				useCORS: true,
+				allowTaint: true
+			});
+
+			const url = canvas.toDataURL('image/jpeg', 0.9);
+
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = `${countryData.CountryName}_card.jpg`;
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		} catch (error) {
+		} finally {
+			questionMarks.forEach((el, i) => {
+				(el as HTMLElement).style.display = prevDisplay[i] || '';
+			});
+
+			if (downloadButton) {
+				(downloadButton as HTMLElement).style.display = prevDisplay[0] || '';
+			}
+		}
+	}
 </script>
 
 {#if $isCurrentCountry === countryData.CountryName && !isSmall}
@@ -50,6 +99,9 @@
 								? 4 * t * t * t
 								: (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
 		}}
+		aria-label="Country data card"
+		id={`card_${countryData.CountryName}`}
+		bind:this={cardContainer}
 	>
 		{#if !$isChartMode}
 			<div class="card_columns" id="terrain_column">
@@ -63,7 +115,11 @@
 							<h2>{countryData.CountryName}</h2>
 							<p>{countryData.Flag}</p>
 						</div>
-						<button class="download_button" aria-label="Download country data">
+						<button
+							class="download_button"
+							aria-label="Download country data"
+							onclick={exportAsJPG}
+						>
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
 								><path
 									d="M480-322.87 268.52-534.35l63.89-65.41L434.5-497.44v-310.69h91v310.69l102.09-102.32 63.89 65.41L480-322.87Zm-237.13 171q-37.78 0-64.39-26.61t-26.61-64.39v-120h91v120h474.26v-120h91v120q0 37.78-26.61 64.39t-64.39 26.61H242.87Z"
@@ -116,7 +172,7 @@
 						<h2>{countryData.CountryName}</h2>
 					</div>
 					<p style="align-self: center; font-size: 48px;">{countryData.Flag}</p>
-					<button class="download_button" aria-label="Download country data">
+					<button class="download_button" aria-label="Download country data" onclick={exportAsJPG}>
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
 							><path
 								d="M480-322.87 268.52-534.35l63.89-65.41L434.5-497.44v-310.69h91v310.69l102.09-102.32 63.89 65.41L480-322.87Zm-237.13 171q-37.78 0-64.39-26.61t-26.61-64.39v-120h91v120h474.26v-120h91v120q0 37.78-26.61 64.39t-64.39 26.61H242.87Z"
@@ -202,7 +258,7 @@
 						</div>
 					</div>
 				</div>
-				<img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" />
+				<!-- <img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" /> -->
 			</div>
 		{/if}
 
@@ -311,7 +367,7 @@
 	}
 
 	.download_button {
-		fill: white;
+		fill: rgb(2, 2, 2);
 		width: 30px;
 		height: 30px;
 		transition: transform 0.3s ease-in-out;
@@ -324,15 +380,15 @@
 
 	.chart_grandpa > .gd_barometer_logo {
 		position: absolute;
-		bottom: 1%;
-		left: 50%;
-		transform: translateX(-50%);
+		bottom: 3%;
+		right: 2%;
 		display: block;
 		width: 120px;
+		border-radius: 20px;
 	}
 
 	.download_button:active {
-		fill: #8e8e8e;
+		fill: #595959;
 		transform: scale(0.95);
 		transition: transform 0.1s ease-in-out;
 	}
@@ -342,7 +398,8 @@
 		bottom: 50%;
 		left: 50%;
 		transform: translate(-50%, 55%) scale(0.8);
-		background-color: #000;
+		background-color: #dddddd;
+		border: 1px solid #000000;
 		display: flex;
 		flex-direction: row;
 		width: 80%;
@@ -350,9 +407,9 @@
 		justify-content: space-between;
 		border-radius: 30px;
 		padding: 20px;
-		background-color: black;
 		column-gap: 20px;
 		z-index: 10;
+		color: black;
 	}
 
 	.card_columns {
@@ -364,7 +421,6 @@
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;
-		color: white;
 	}
 
 	.card_columns:nth-of-type(2) {
@@ -455,7 +511,7 @@
 
 	.data_title {
 		font-size: 12px;
-		color: #ababab;
+		color: #3d3d3d;
 		width: 100%;
 		overflow: ellipsis;
 		white-space: nowrap;
@@ -471,7 +527,7 @@
 	}
 
 	.chart_grandpa > .data_header {
-		color: white;
+		color: rgb(0, 0, 0);
 	}
 
 	.chart_header {
@@ -486,6 +542,7 @@
 		border-radius: 20px;
 		padding-left: 20px;
 		padding-right: 20px;
+		border: 1px solid #000000;
 	}
 
 	.chart_header > .number_container {
@@ -545,12 +602,6 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-
-	.column_header > h2,
-	p {
-		color: white;
-	}
-
 	.single_column_chart > :nth-child(2) {
 		width: 100%;
 		height: 100%;
@@ -566,11 +617,15 @@
 		flex-direction: row;
 		justify-content: center !important;
 		column-gap: 90px;
+		width: 100%;
+		max-width: 100%;
+		border: 1px solid #000000;
 	}
 
 	.dx_column {
 		flex-direction: column;
 		align-items: center;
+		border: 1px solid #000000;
 	}
 
 	.single_chart_container {
@@ -743,27 +798,33 @@
 		width: fit-content;
 		height: fit-content;
 		border: 1px solid white;
+		background-color: yellow;
+		color: black;
 		border-radius: 10px;
 		padding-right: 10px;
 		padding-left: 10px;
 	}
 
+	.worst_best_button > p {
+		color: black;
+	}
+
 	.worst_best_button:hover {
-		background-color: rgb(50, 50, 50);
-		color: rgb(255, 255, 255);
+		background-color: rgb(168, 168, 0);
 		transform: scale(1.05);
 		transition: transform 0.1s ease-in-out;
+		color: black;
 	}
 
 	.worst_best_button:active {
-		background-color: white;
+		background-color: rgb(255, 255, 79);
 		color: black;
 		transform: scale(0.95);
 		transition: transform 0.1s ease-in-out;
 	}
 
 	.worst_best_button:active > p {
-		color: rgb(0, 0, 0);
+		color: black;
 	}
 
 	:global(.markers.show > .small_card_sphere) {

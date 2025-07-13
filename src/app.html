@@ -2,16 +2,60 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
+
+		<!-- Primary metadata -->
+		<title>Global Data Barometer Explorer 2025</title>
+		<meta
+			name="description"
+			content="Explore how each country turns strong data laws into real-world open datasets. Compare governance, availability and capability at a glance."
+		/>
+		<meta
+			name="keywords"
+			content="Global Data Barometer, open data, data governance, data availability, data capability, country comparison, 2025"
+		/>
+		<meta name="author" content="Global Data Barometer Visualization Team" />
+		<link rel="canonical" href="https://data-barometer-exp.vercel.app/" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- Favicon -->
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Global Data Barometer Explorer 2025" />
+		<meta
+			property="og:description"
+			content="Interactive dashboard: see which countries have strong data policy, which publish datasets, and where the gaps are."
+		/>
+		<meta property="og:url" content="https://data-barometer-exp.vercel.app/" />
+		<meta property="og:image" content="https://data-barometer-exp.vercel.app/OG_IMAGE.png" />
+		<meta property="og:image:alt" content="World map coloured by open-data performance" />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Global Data Barometer Explorer 2025" />
+		<meta
+			name="twitter:description"
+			content="Track governance, availability and capability scores for every country."
+		/>
+		<meta name="twitter:image" content="https://data-barometer-exp.vercel.app/OG_IMAGE.png" />
+
+		<!-- PWA / Theme -->
+		<link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
+		<meta name="theme-color" content="#0f172a" />
+
+		<!-- Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap"
 			rel="stylesheet"
 		/>
+
+		<!-- SvelteKit head injections -->
 		%sveltekit.head%
 	</head>
+
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
