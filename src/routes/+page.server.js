@@ -1,11 +1,9 @@
-import { readFile } from 'fs/promises';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
 import Papa from 'papaparse';
 
 import earthMap from '$lib/assets/8k.webp?url';
 import normalMap from '$lib/assets/8k_normal.webp?url';
 import specularMap from '$lib/assets/8k_specular.webp?url';
+import csv from '$lib/assets/dataset.csv?raw';
 
 let coordinates = [
 	{ territoryName: 'Angola', lat: -12.0, lon: 17.5 },
@@ -53,12 +51,8 @@ let coordinates = [
 	{ territoryName: 'Uruguay', lat: -32.5, lon: -55.8 }
 ];
 
-async function parseCSV() {
-	const __filename = fileURLToPath(import.meta.url);
-	const __dirname = dirname(__filename);
-	const csvPath = join(__dirname, '../../../static/dataset/Dataset.csv');
-	const fileContent = await readFile(csvPath, 'utf8');
-	const result = Papa.parse(fileContent, {
+function parseCSV() {
+	const result = Papa.parse(csv, {
 		header: true,
 		skipEmptyLines: true,
 		dynamicTyping: true
@@ -69,7 +63,7 @@ async function parseCSV() {
 
 export const load = async () => {
 	return {
-		data: await parseCSV(),
+		data: parseCSV(),
 		earthMap,
 		normalMap,
 		specularMap,
