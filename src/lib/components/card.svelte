@@ -381,6 +381,7 @@
 		column-gap: 20px;
 		z-index: 10;
 		color: black;
+		min-width: 920px;
 	}
 
 	.card_columns {
@@ -553,6 +554,7 @@
 		padding: 0px;
 		column-gap: 20px;
 		position: relative;
+		min-width: 0;
 	}
 
 	.single_column_chart {
@@ -573,8 +575,16 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+
+	.column_header > h2 {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		overflow: visible;
+		position: relative;
+	}
+
 	.single_column_chart > :nth-child(2) {
-		width: 100%;
 		height: 100%;
 		background-color: white;
 		border-radius: 20px;
@@ -582,14 +592,13 @@
 		justify-content: space-between;
 		padding: 20px 10px;
 		position: relative;
+		width: 100%;
 	}
 
 	.sx_column {
 		flex-direction: row;
 		justify-content: center !important;
-		column-gap: 90px;
-		width: 100%;
-		max-width: 100%;
+		column-gap: 50px;
 		border: 1px solid #000000;
 	}
 
