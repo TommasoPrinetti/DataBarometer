@@ -5,12 +5,13 @@
 	export let isVertical: boolean = false;
 
 	import { isWorstMode } from '$lib/stores.js';
+	import { slide } from 'svelte/transition';
 </script>
 
 <div class="chart">
 	<div class="box_chart">
 		{#if isVertical}
-			<div style="height: {length}%"></div>
+			<div style="height: {length}%" in:slide={{ duration: 1500, axis: 'y', delay: 1000 }}></div>
 		{:else}
 			<div style="width: {length}%"></div>
 		{/if}
@@ -49,19 +50,34 @@
 		flex-direction: row;
 		column-gap: 5px;
 		align-items: center;
+		transition:
+			width 0.8s ease-in-out,
+			height 0.8s ease-in-out;
+	}
+
+	.box_chart > div {
+		transition: all 0.8s ease-in-out;
+	}
+
+	.box_chart:nth-of-type(2) {
+		transition: height 0.8s ease-in-out;
 	}
 
 	.box_chart:nth-of-type(1) > div {
 		height: 100%;
 		background-color: #7a7a7a;
 		border-radius: 5px;
-		transition: width 0.8s ease-in-out;
+		transition:
+			width 0.8s ease-in-out,
+			height 0.8s ease-in-out;
 	}
 
 	.box_chart:nth-of-type(2) > div {
 		border-radius: 5px;
 		height: 100%;
 		background-color: #d9d9d9;
-		transition: width 0.8s ease-in-out;
+		transition:
+			width 0.8s ease-in-out,
+			height 0.8s ease-in-out;
 	}
 </style>

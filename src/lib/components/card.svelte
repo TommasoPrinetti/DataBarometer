@@ -11,7 +11,7 @@
 		threePillars,
 		evaluationClusters
 	} from '$lib/stores.js';
-	import { slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import html2canvas from 'html2canvas';
 
 	export let countryData: any;
@@ -70,35 +70,6 @@
 {#if $isCurrentCountry === countryData.CountryName && !isSmall}
 	<div
 		class="card_container"
-		in:slide={{
-			duration: 1500,
-			axis: 'y',
-			delay: 1000,
-			easing: (t) =>
-				t < 0
-					? 0
-					: t > 1
-						? 1
-						: t === 1
-							? 1
-							: t < 0.5
-								? 4 * t * t * t
-								: (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
-		}}
-		out:slide={{
-			duration: 1500,
-			axis: 'y',
-			easing: (t) =>
-				t < 0
-					? 0
-					: t > 1
-						? 1
-						: t === 1
-							? 1
-							: t < 0.5
-								? 4 * t * t * t
-								: (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
-		}}
 		aria-label="Country data card"
 		id={`card_${countryData.CountryName}`}
 		bind:this={cardContainer}
@@ -171,7 +142,7 @@
 					<div>
 						<h2>{countryData.CountryName}</h2>
 					</div>
-					<p style="align-self: center; font-size: 48px;">{countryData.Flag}</p>
+					<p style="align-self: center; font-size: 52px;">{countryData.Flag}</p>
 					<button class="download_button" aria-label="Download country data" onclick={exportAsJPG}>
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
 							><path
@@ -187,7 +158,7 @@
 					</div>
 					<div class="number_container">
 						<h3>Gov. form<QuestionMark type="Gov. form" /></h3>
-						<p>{countryData.GovForm}</p>
+						<p style="white-space: nowrap;">{countryData.GovForm}</p>
 					</div>
 					<div class="number_container">
 						<h3>GDP<QuestionMark type="GDP" /></h3>
@@ -797,7 +768,7 @@
 	.worst_best_button {
 		width: fit-content;
 		height: fit-content;
-		border: 1px solid white;
+		border: 1px solid rgb(0, 0, 0);
 		background-color: yellow;
 		color: black;
 		border-radius: 10px;

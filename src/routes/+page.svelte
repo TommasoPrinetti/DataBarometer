@@ -4,13 +4,19 @@
 	import Planet from '$lib/components/planet.svelte';
 	import Card from '$lib/components/card.svelte';
 	import Explore from '$lib/components/explore.svelte';
-	import { isPlanetReady } from '$lib/stores.js';
+	import { isPlanetReady, isCurrentCountry } from '$lib/stores.js';
+	import { writable } from 'svelte/store';
 	import Lenis from 'lenis';
 	import 'lenis/dist/lenis.css';
 	import gdBarometerLogo from '$lib/assets/globaldatabarometer.png';
 
 	/** @type {import('./$types').PageProps} */
 	let { data } = $props();
+	let currentIndex = $state(0);
+
+	$effect(() => {
+		currentIndex = data.data.findIndex((country: any) => country.CountryName === $isCurrentCountry);
+	});
 
 	let exploreWrapper: HTMLElement;
 	let heroSection: HTMLElement;
@@ -104,9 +110,13 @@
 
 <section class="explore_wrapper" bind:this={exploreWrapper}>
 	<Explore countriesData={data.data} />
-	{#each data.data as country, index}
+	<!-- {#each data.data as country, index}
 		<Card countryData={country} isSmall={false} {index} />
-	{/each}
+	{/each} -->
+
+	{#if data.data[currentIndex]}
+		<Card countryData={data.data[currentIndex]} isSmall={false} index={currentIndex} />
+	{/if}
 </section>
 
 <style>
