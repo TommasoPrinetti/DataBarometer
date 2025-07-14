@@ -5,6 +5,7 @@
 	import * as THREE from 'three';
 	import Card from '$lib/components/card.svelte';
 	import { isPlanetReady } from '$lib/stores.js';
+	import { interactivity } from '@threlte/extras';
 
 	export let earthMap: string;
 	export let normalMap: string;
@@ -17,7 +18,7 @@
 	let globe: THREE.Mesh;
 
 	let sphereYPosition = -0.5;
-	let globeRadius = 3;
+	let globeRadius = 4.5;
 	let loadFlag = false;
 
 	function latLongToCartesian(
@@ -99,52 +100,47 @@
 				}, 1000);
 			}, 200);
 		});
+
+		setTimeout(() => {
+			if (camera) {
+				camera.rotation.set(Math.PI / 100, Math.PI / 4, Math.PI / 12);
+			}
+		}, 1000);
+
+		interactivity();
 	});
 </script>
 
 <div class="canvas-container">
-	<T.PerspectiveCamera
-		makeDefault
-		position={[0, 0, 8]}
-		fov={60}
-		aspect={16 / 9}
-		near={0.1}
-		far={50}
-		bindthis={(el: any) => (camera = el)}
-		rotation={[0, 1, 0]}
-	>
-		<OrbitControls
-			enablePan={false}
-			enableZoom={false}
-			enableDamping={true}
-			dampingFactor={0.1}
-			autoRotate={true}
-			autoRotateSpeed={0.3}
-			rotateSpeed={0.3}
-			zoomToCursor={false}
-			zoomSpeed={1}
-			minPolarAngle={0}
-			maxPolarAngle={Math.PI}
-		/>
-	</T.PerspectiveCamera>
-
-	<T.AmbientLight intensity={5} color={0xffffff} />
-	<!-- <T.DirectionalLight
-		position={[0, 0, -100]}
-		intensity={200}
-		color={0xffffff}
-		castShadow={true}
-		lookat={[0, 0, 0]}
-	/>
-	<T.DirectionalLight
-		position={[5, 5, 20]}
-		intensity={2}
-		color={0xffffff}
-		castShadow={true}
-		lookat={[0, 0, 0]}
-	/>!-->
-
 	{#await texturesPromise then [earthMap, normalMap, specularMap]}
+		<T.PerspectiveCamera
+			makeDefault
+			position={[3, -5, 10]}
+			rotation={[Math.PI / 100, Math.PI / 4, Math.PI / 12]}
+			fov={60}
+			aspect={16 / 9}
+			near={0.1}
+			far={50}
+			bindthis={(el: any) => (camera = el)}
+			lookat={[0, 0, 0]}
+		>
+			<OrbitControls
+				enablePan={false}
+				enableZoom={false}
+				enableDamping={true}
+				dampingFactor={0.1}
+				autoRotate={true}
+				autoRotateSpeed={0.1}
+				rotateSpeed={0.3}
+				zoomToCursor={false}
+				zoomSpeed={1}
+				minPolarAngle={0}
+				maxPolarAngle={Math.PI}
+				enableRotate={false}
+			/>
+		</T.PerspectiveCamera>
+
+		<T.AmbientLight intensity={5} color={0xffffff} />
 		<T.Mesh
 			bindthis={(el: any) => {
 				globe = el;
@@ -171,6 +167,7 @@
 				transform={true}
 				zIndexRange={[0, 1000]}
 				castShadow={true}
+				pointer-events={true}
 			>
 				<Card
 					countryData={countriesData.find((c: any) => c.CountryName === m.territoryName)}
@@ -189,6 +186,8 @@
 		transition:
 			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
 			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+		pointer-events: auto;
+		z-index: 10;
 	}
 
 	.canvas-container {
@@ -198,6 +197,7 @@
 		top: 0;
 		left: 0;
 		z-index: 1;
+		pointer-events: auto;
 	}
 
 	:global(canvas) {

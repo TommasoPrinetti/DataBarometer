@@ -11,8 +11,10 @@
 		threePillars,
 		evaluationClusters
 	} from '$lib/stores.js';
-	import { fade } from 'svelte/transition';
+	import { fade, scale } from 'svelte/transition';
 	import html2canvas from 'html2canvas';
+	import { onMount } from 'svelte';
+	import { interactivity } from '@threlte/extras';
 
 	export let countryData: any;
 	export let isSmall = false;
@@ -65,14 +67,46 @@
 			}
 		}
 	}
+
+	function toggleCard(el: HTMLElement) {
+		console.log(el);
+
+		if (el.classList.contains('hidden')) {
+			el.classList.remove('hidden');
+		} else {
+			el.style.transition = 'transform 1.65s cubic-bezier(1,0,.63,1.01)';
+			el.classList.add('hidden');
+			setTimeout(() => {
+				isCurrentCountry.set('');
+			}, 1450);
+		}
+	}
+
+	onMount(() => {
+		if (isSmall) {
+			interactivity();
+		}
+	});
 </script>
 
 {#if $isCurrentCountry === countryData.CountryName && !isSmall}
+	<script>
+		setTimeout(() => {
+			if (document.querySelector(`.card_container.hidden`)) {
+				console.log('removing hidden');
+				document.querySelector(`.card_container.hidden`).classList.remove('hidden');
+			} else {
+				console.log('adding hidden');
+				document.querySelector(`.card_container`).classList.add('hidden');
+			}
+		}, 600);
+	</script>
 	<div
-		class="card_container"
+		class="card_container hidden"
 		aria-label="Country data card"
 		id={`card_${countryData.CountryName}`}
 		bind:this={cardContainer}
+		out:scale={{ duration: 1000, delay: 1000, easing: (t) => t * t }}
 	>
 		{#if !$isChartMode}
 			<div class="card_columns" id="terrain_column">
@@ -233,7 +267,11 @@
 			</div>
 		{/if}
 
-		<button class="side_button" aria-label="Close" onclick={() => isCurrentCountry.set('')}>
+		<button
+			class="side_button"
+			aria-label="Close"
+			onclick={() => cardContainer && toggleCard(cardContainer)}
+		>
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
 				><path
 					d="M256-192.35 192.35-256l224-224-224-224L256-767.65l224 224 224-224L767.65-704l-224 224 224 224L704-192.35l-224-224-224 224Z"
@@ -257,7 +295,26 @@
 	</div>
 {:else if isSmall}
 	<div class="small_card_sphere" style="transition-delay: {index * 0.1}s;"></div>
-	<div class="small_card_container" style="transition-delay: {index * 0.1 + 1.5}s;">
+	<div
+		class="small_card_container"
+		style="transition-delay: {index * 0.1 + 1.5}s;"
+		role="button"
+		tabindex="0"
+		onpointerenter={(e) => {
+			const element = (e.target as HTMLElement).closest('.small_card_container') as HTMLElement;
+			element.style.transform = 'scale(2.05)';
+			element.style.zIndex = '1000';
+			element.style.transition = 'transform 0.65s ease-in-out';
+			element.style.transitionDelay = '0.1s';
+		}}
+		onpointerleave={(e) => {
+			const element = (e.target as HTMLElement).closest('.small_card_container') as HTMLElement;
+			element.style.transform = 'scale(1)';
+			element.style.zIndex = '1';
+			element.style.transition = 'transform 0.65s ease-in-out';
+			element.style.transitionDelay = '0.1s';
+		}}
+	>
 		<div class="small_map">
 			<img src={terrainTest} alt="Map" />
 		</div>
@@ -267,9 +324,9 @@
 				<p>{countryData.Flag}</p>
 			</div>
 			<div class="small_counters">
-				<p>Average: <b>{countryData.Overall_per_country}</b></p>
-				<p>Availability: <b>{countryData.Availability}</b></p>
-				<p>Capability: <b>{countryData.Capability}</b></p>
+				<p><b>Average:</b> {countryData.Overall_per_country}</p>
+				<p><b>Availability:</b> {countryData.Availability}</p>
+				<p><b>Capability:</b> {countryData.Capability}</p>
 			</div>
 		</div>
 	</div>
@@ -282,6 +339,10 @@
 		margin: 0;
 		padding: 0;
 		letter-spacing: -4%;
+	}
+
+	b {
+		font-weight: 600;
 	}
 
 	.side_button {
@@ -382,6 +443,20 @@
 		z-index: 10;
 		color: black;
 		min-width: 920px;
+		transition:
+			transform 1s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+		transition-delay: 0.6s;
+		will-change: transform, opacity;
+	}
+
+	:global(.card_container.hidden) {
+		transform: translate(-50%, 200%) scale(0.8);
+		transition:
+			transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+		transition-delay: 0.2s;
+		will-change: transform, opacity;
 	}
 
 	.card_columns {
@@ -673,7 +748,7 @@
 	}
 
 	.small_card_container {
-		width: 250px;
+		width: fit-content;
 		height: 115px;
 		display: inline-flex;
 		flex-direction: row;
@@ -689,13 +764,13 @@
 		-webkit-backface-visibility: hidden;
 		-ms-backface-visibility: hidden;
 		user-select: none;
-		pointer-events: none;
 		opacity: 0;
 		transform: scale(0);
 		transition:
 			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
 			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 		transition-delay: 3s;
+		cursor: pointer;
 	}
 
 	.small_card_sphere {
@@ -760,6 +835,7 @@
 
 	.small_counters > p {
 		font-size: 12px;
+		color: white;
 	}
 
 	.small_header h2 {
@@ -826,5 +902,23 @@
 			transform 1s cubic-bezier(0.165, 0.84, 0.44, 1),
 			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 		transition-delay: 1.5s;
+	}
+
+	:global(.markers.show > .small_card_container.enlarge) {
+		transform: scale(2.05) !important;
+		transition: transform 0.1s ease-in-out;
+		transition:
+			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+		transition-delay: 0.125s;
+	}
+
+	:global(.markers.show > .small_card_container.enlarge) {
+		transform: scale(2.05) !important;
+		transition: transform 0.1s ease-in-out;
+		transition:
+			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+		transition-delay: 0.125s;
 	}
 </style>

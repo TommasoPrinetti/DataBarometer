@@ -139,9 +139,6 @@
 		align-items: center;
 		justify-content: center;
 		position: relative;
-		scroll-snap-type: y mandatory;
-		scroll-behavior: smooth;
-		scroll-timeline: --page-scroll block;
 	}
 
 	.hero_section {
@@ -153,19 +150,6 @@
 		align-items: center;
 		justify-content: flex-start;
 		overflow: hidden;
-		scroll-snap-align: start;
-		scroll-snap-type: y mandatory;
-	}
-
-	@keyframes exploreButtonParallax {
-		from {
-			opacity: 1;
-			transform: translateY(0);
-		}
-		to {
-			opacity: 0;
-			transform: translateY(-20px);
-		}
 	}
 
 	:global(.planet-wrapper) {
@@ -174,13 +158,11 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		/* raise it above normal content so it can catch pointer events */
-		z-index: 1; /* or any positive number */
-		/* no pointer-events property here */
-		pointer-events: none;
+		z-index: 1;
 		transform: translateY(0);
 		opacity: 0;
 		transition: all 3.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+		pointer-events: auto;
 	}
 
 	:global(.planet-wrapper.out) {
@@ -194,8 +176,7 @@
 		height: 100% !important;
 		max-width: 100%;
 		object-fit: contain;
-		/* make sure interaction is allowed */
-		pointer-events: none; /* this is the default, can be omitted */
+		pointer-events: auto;
 	}
 
 	.explore_wrapper {
@@ -271,6 +252,11 @@
 		padding-top: 10%;
 		color: black;
 		background-color: transparent;
+		pointer-events: all !important;
+		user-select: text;
+		-webkit-user-select: text;
+		-moz-user-select: text;
+		-ms-user-select: text;
 	}
 
 	.gd_barometer_logo {
@@ -353,37 +339,31 @@
 	}
 
 	.explore_button {
-		position: fixed;
-		bottom: 2%;
+		position: sticky;
+		top: 90%;
 		left: 50%;
 		transform: translate(-50%, 0%);
 		z-index: 1000;
-		background-color: rgba(255, 255, 255, 0);
-		color: #fff;
-		border: 0px solid #fff;
+		background-color: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(10px);
+		color: #000000;
+		border: 1px solid #000000;
 		padding: 10px 20px;
 		border-radius: 20px;
 		cursor: pointer;
-		transition: all 0.3s ease-in-out;
 		font-size: 16px;
-		color: white;
-		filter: blur(1px);
-		transition: filter 0.3s ease-in-out;
-		z-index: 2;
-		animation: exploreButtonParallax linear;
-		animation-timeline: --page-scroll;
-		animation-range: 0% 50%;
+		z-index: 12;
 	}
 
 	.explore_button:hover {
 		filter: blur(0px);
 		transition:
 			filter 0.3s ease-in-out,
-			backdrop-filter 1.8s ease-in-out,
-			background-color 1.8s ease-in-out,
-			border 1.8s ease-in-out;
+			backdrop-filter 0.3s ease-in-out,
+			background-color 0.3s ease-in-out,
+			border 0.3s ease-in-out;
 		transition-delay: 0.08s;
-		background-color: rgba(142, 142, 142, 0.62);
+		background-color: rgba(235, 235, 235, 0.62);
 	}
 
 	.explore_button:active {
