@@ -315,9 +315,9 @@
 							<h2>Three main pillars <QuestionMark type="pillars" /></h2>
 							<button class="worst_best_button" onclick={() => isWorstMode.set(!$isWorstMode)}>
 								{#if $isWorstMode}
-									<p>Compare w/ best country</p>
+									<p>w/ best country</p>
 								{:else}
-									<p>Compare w/ worst country</p>
+									<p>w/ worst country</p>
 								{/if}
 							</button>
 						</div>
@@ -343,9 +343,9 @@
 							<h2>Eight evaluation clusters<QuestionMark type="clusters" /></h2>
 							<button class="worst_best_button" onclick={() => isWorstMode.set(!$isWorstMode)}>
 								{#if $isWorstMode}
-									<p>Compare w/ best country</p>
+									<p>w/ best country</p>
 								{:else}
-									<p>Compare w/ worst country</p>
+									<p>w/ worst country</p>
 								{/if}
 							</button>
 						</div>
@@ -679,7 +679,10 @@
 		border: 1px solid #000000;
 		display: flex;
 		flex-direction: row;
-		width: 80%;
+
+		width: 1200px;
+		min-width: 920px;
+
 		height: 90%;
 		justify-content: space-between;
 		border-radius: 30px;
@@ -687,10 +690,11 @@
 		column-gap: 20px;
 		z-index: 10;
 		color: black;
-		min-width: 920px;
+
 		transition:
 			transform 1s cubic-bezier(0.165, 0.84, 0.44, 1),
 			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+
 		transition-delay: 0.6s;
 		will-change: transform, opacity;
 	}
@@ -719,7 +723,8 @@
 
 	.card_columns:nth-of-type(2) {
 		background-color: transparent;
-		width: 50%;
+		width: max-content;
+		padding: 10px;
 	}
 
 	.card_columns:nth-of-type(2) > div {
@@ -755,7 +760,7 @@
 	}
 
 	.data_grid {
-		width: 100%;
+		width: max-content;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -767,20 +772,24 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 0px;
-		width: 100%;
+		width: max-content;
 	}
 
 	.data_triple_grid {
-		width: 100%;
+		width: max-content;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-row-gap: 10px;
+		grid-column-gap: 20px;
 		align-items: flex-start;
 	}
 
+	.data_triple_grid > div > h3 {
+		text-align: left;
+	}
+
 	.number_container {
-		width: 100%;
-		max-width: 130px;
+		width: 180px;
 		height: fit-content;
 		padding-top: 2px;
 		padding-bottom: 2px;
@@ -866,17 +875,18 @@
 
 	.double_column_chart {
 		width: 100%;
+		min-width: 100%;
 		height: 100%;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
 		background-color: transparent;
 		border-radius: 20px;
 		padding: 0px;
 		column-gap: 20px;
 		position: relative;
 		min-width: 0;
+
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		grid-column-gap: 20px;
 	}
 
 	.single_column_chart {
@@ -906,21 +916,29 @@
 		position: relative;
 	}
 
+	.single_column_chart:nth-of-type(1) {
+		grid-column: 1;
+	}
+
+	.single_column_chart:nth-of-type(2) {
+		grid-column: 2;
+	}
+
 	.single_column_chart > :nth-child(2) {
 		height: 100%;
+		width: 100%;
 		background-color: white;
 		border-radius: 20px;
 		display: flex;
 		justify-content: space-between;
 		padding: 20px 10px;
 		position: relative;
-		width: 100%;
 	}
 
 	.sx_column {
 		flex-direction: row;
-		justify-content: center !important;
-		column-gap: 50px;
+		justify-content: center;
+		column-gap: auto;
 		border: 1px solid #000000;
 	}
 
@@ -975,9 +993,14 @@
 		align-items: center;
 	}
 
-	:global(.vertical_chart_container > .number_container > p) {
+	:global(.vertical_chart_container > .number_container > p, h3) {
 		color: black;
 		text-align: center;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		overflow: visible;
+		position: relative;
 	}
 
 	:global(.vertical_chart_container > .chart > .box_chart:nth-of-type(1) > div) {
@@ -1121,6 +1144,9 @@
 
 	.worst_best_button > p {
 		color: black;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.worst_best_button:hover {
