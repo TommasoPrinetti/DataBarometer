@@ -12,6 +12,8 @@
 	export let specularMap: string;
 	export let coordinates: { territoryName: string; lat: number; lon: number }[];
 	export let countriesData;
+	export let countryImages: any;
+
 	let globeGeometry: THREE.Object3D[] = [];
 
 	let camera: THREE.PerspectiveCamera;
@@ -173,6 +175,7 @@
 					countryData={countriesData.find((c: any) => c.CountryName === m.territoryName)}
 					isSmall={true}
 					index={i}
+					{countryImages}
 				/>
 			</HTML>
 		{/each}

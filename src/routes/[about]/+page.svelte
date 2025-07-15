@@ -63,6 +63,11 @@
 		highlighting. The cards, <b>downloadable and animated</b>, want to be a touch point for the
 		user, both to store and to share, to give visibility to the dataset-crafting work done by GDB
 	</p>
+	<h2>Images 🌍</h2>
+	<p>
+		The images used in the cards are topographic reliefs created by AI image generation. They're
+		absolutely not accurate, but they give an idea of the country we're talking about.
+	</p>
 	<h2>Overall comments 💭</h2>
 	<p>
 		Lastly, the experience is <b>simple</b>, oriented to <b>desktop users</b>, and less

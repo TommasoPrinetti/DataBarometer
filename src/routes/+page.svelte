@@ -120,6 +120,7 @@
 				specularMap={data.specularMap}
 				coordinates={data.coordinates}
 				countriesData={data.data}
+				countryImages={data.countryImages}
 			/>
 		</Canvas>
 	</div>
@@ -127,12 +128,13 @@
 
 <section class="explore_wrapper" bind:this={exploreWrapper}>
 	<Explore countriesData={data.data} />
-	<!-- {#each data.data as country, index}
-		<Card countryData={country} isSmall={false} {index} />
-	{/each} -->
-
 	{#if data.data[currentIndex]}
-		<Card countryData={data.data[currentIndex]} isSmall={false} index={currentIndex} />
+		<Card
+			countryData={data.data[currentIndex]}
+			isSmall={false}
+			index={currentIndex}
+			countryImages={data.countryImages}
+		/>
 	{/if}
 </section>
 

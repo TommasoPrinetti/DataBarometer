@@ -5,6 +5,93 @@ import normalMap from '$lib/assets/8k_normal.webp?url';
 import specularMap from '$lib/assets/8k_specular.webp?url';
 import csv from '$lib/assets/dataset.csv?raw';
 
+import angola from '$lib/assets/COUNTRYMAPS/angola.jpg';
+import argentina from '$lib/assets/COUNTRYMAPS/argentina.jpg';
+import bahamas from '$lib/assets/COUNTRYMAPS/bahamas.jpg';
+import barbados from '$lib/assets/COUNTRYMAPS/barbados.jpg';
+import belize from '$lib/assets/COUNTRYMAPS/belize.jpg';
+import benin from '$lib/assets/COUNTRYMAPS/benin.jpg';
+import bolivia from '$lib/assets/COUNTRYMAPS/bolivia.jpg';
+import botswana from '$lib/assets/COUNTRYMAPS/botswana.jpg';
+import brazil from '$lib/assets/COUNTRYMAPS/brazil.jpg';
+import burkinaFaso from '$lib/assets/COUNTRYMAPS/Burkina Faso.jpg';
+import cameroon from '$lib/assets/COUNTRYMAPS/cameroon.jpg';
+import chile from '$lib/assets/COUNTRYMAPS/chile.jpg';
+import colombia from '$lib/assets/COUNTRYMAPS/colombia.jpg';
+import costaRica from '$lib/assets/COUNTRYMAPS/Costa Rica.jpg';
+import coteDIvoire from '$lib/assets/COUNTRYMAPS/Cote_D_Ivoire.jpg';
+import dominicanRepublic from '$lib/assets/COUNTRYMAPS/Dominican Republic.jpg';
+import ecuador from '$lib/assets/COUNTRYMAPS/ecuador.jpg';
+import elSalvador from '$lib/assets/COUNTRYMAPS/El Salvador.jpg';
+import gambia from '$lib/assets/COUNTRYMAPS/gambia.jpg';
+import ghana from '$lib/assets/COUNTRYMAPS/ghana.jpg';
+import guatemala from '$lib/assets/COUNTRYMAPS/guatemala.jpg';
+import honduras from '$lib/assets/COUNTRYMAPS/honduras.jpg';
+import jamaica from '$lib/assets/COUNTRYMAPS/jamaica.jpg';
+import kenya from '$lib/assets/COUNTRYMAPS/kenya.jpg';
+import liberia from '$lib/assets/COUNTRYMAPS/liberia.jpg';
+import mexico from '$lib/assets/COUNTRYMAPS/mexico.jpg';
+import morocco from '$lib/assets/COUNTRYMAPS/morocco.jpg';
+import mozambique from '$lib/assets/COUNTRYMAPS/mozambique.jpg';
+import namibia from '$lib/assets/COUNTRYMAPS/namibia.jpg';
+import nigeria from '$lib/assets/COUNTRYMAPS/nigeria.jpg';
+import panama from '$lib/assets/COUNTRYMAPS/panama.jpg';
+import paraguay from '$lib/assets/COUNTRYMAPS/paraguay.jpg';
+import peru from '$lib/assets/COUNTRYMAPS/peru.jpg';
+import rwanda from '$lib/assets/COUNTRYMAPS/rwanda.jpg';
+import senegal from '$lib/assets/COUNTRYMAPS/senegal.jpg';
+import sierraLeone from '$lib/assets/COUNTRYMAPS/Sierra Leone.jpg';
+import southAfrica from '$lib/assets/COUNTRYMAPS/South Africa.jpg';
+import togo from '$lib/assets/COUNTRYMAPS/togo.jpg';
+import trinidadAndTobago from '$lib/assets/COUNTRYMAPS/Trinidad and Tobago.jpg';
+import tunisia from '$lib/assets/COUNTRYMAPS/tunisia.jpg';
+import uganda from '$lib/assets/COUNTRYMAPS/uganda.jpg';
+import uruguay from '$lib/assets/COUNTRYMAPS/uruguay.jpg?enhanced';
+
+export const countryImages = {
+	angola,
+	argentina,
+	bahamas,
+	barbados,
+	belize,
+	benin,
+	bolivia,
+	botswana,
+	brazil,
+	burkinaFaso,
+	cameroon,
+	chile,
+	colombia,
+	costaRica,
+	coteDIvoire,
+	dominicanRepublic,
+	ecuador,
+	elSalvador,
+	gambia,
+	ghana,
+	guatemala,
+	honduras,
+	jamaica,
+	kenya,
+	liberia,
+	mexico,
+	morocco,
+	mozambique,
+	namibia,
+	nigeria,
+	panama,
+	paraguay,
+	peru,
+	rwanda,
+	sierraLeone,
+	southAfrica,
+	togo,
+	trinidadAndTobago,
+	tunisia,
+	uganda,
+	uruguay
+};
+
 let coordinates = [
 	{ territoryName: 'Angola', lat: -12.0, lon: 17.5 },
 	{ territoryName: 'Argentina', lat: -34.0, lon: -64.0 },
@@ -67,6 +154,7 @@ export const load = async () => {
 		earthMap,
 		normalMap,
 		specularMap,
-		coordinates
+		coordinates,
+		countryImages
 	};
 };
