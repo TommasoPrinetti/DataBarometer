@@ -41,21 +41,51 @@
 		}
 
 		try {
-			const canvas = await html2canvas(cardContainer, {
-				backgroundColor: '#000000',
+			const cardCanvas = await html2canvas(cardContainer, {
+				backgroundColor: 'transparent',
 				scale: 2,
 				useCORS: true,
 				allowTaint: true
 			});
 
-			const url = canvas.toDataURL('image/jpeg', 0.9);
+			const finalCanvas = document.createElement('canvas');
+			const ctx = finalCanvas.getContext('2d');
 
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = `${countryData.CountryName}_card.jpg`;
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
+			finalCanvas.width = 2520;
+			finalCanvas.height = 1580;
+
+			if (ctx) {
+				ctx.fillStyle = '#ffffff';
+				ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+				const cardWidth = cardCanvas.width;
+				const cardHeight = cardCanvas.height;
+				const bottomPadding = 100;
+				const x = (finalCanvas.width - cardWidth) / 2;
+				const y = (finalCanvas.height - cardHeight - bottomPadding) / 2;
+
+				ctx.drawImage(cardCanvas, x, y);
+
+				const logoImg = new Image();
+				logoImg.crossOrigin = 'anonymous';
+				logoImg.onload = () => {
+					const logoWidth = 400;
+					const logoHeight = (logoWidth * logoImg.height) / logoImg.width;
+					const logoX = (finalCanvas.width - logoWidth) / 2;
+					const logoY = finalCanvas.height - bottomPadding - 30;
+
+					ctx.drawImage(logoImg, logoX, logoY, logoWidth, logoHeight);
+
+					const url = finalCanvas.toDataURL('image/jpeg', 0.9);
+					const link = document.createElement('a');
+					link.href = url;
+					link.download = `${countryData.CountryName}_card.jpg`;
+					document.body.appendChild(link);
+					link.click();
+					document.body.removeChild(link);
+				};
+				logoImg.src = gdBarometerLogo;
+			}
 		} catch (error) {
 		} finally {
 			questionMarks.forEach((el, i) => {
@@ -208,7 +238,7 @@
 				<div class="double_column_chart">
 					<div class="single_column_chart">
 						<div class="column_header">
-							<h2>Three main pillars</h2>
+							<h2>Three main pillars <QuestionMark type="pillars" /></h2>
 							<button class="worst_best_button" onclick={() => isWorstMode.set(!$isWorstMode)}>
 								{#if $isWorstMode}
 									<p>worst</p>
@@ -236,7 +266,7 @@
 					</div>
 					<div class="single_column_chart">
 						<div class="column_header">
-							<h2>Eight evaluation clusters</h2>
+							<h2>Eight evaluation clusters<QuestionMark type="clusters" /></h2>
 							<button class="worst_best_button" onclick={() => isWorstMode.set(!$isWorstMode)}>
 								{#if $isWorstMode}
 									<p>worst</p>
@@ -302,17 +332,34 @@
 		tabindex="0"
 		onpointerenter={(e) => {
 			const element = (e.target as HTMLElement).closest('.small_card_container') as HTMLElement;
+			const siblings = Array.from(document.querySelectorAll('.small_card_container')).filter(
+				(child) => child !== element
+			);
+			console.log(siblings);
 			element.style.transform = 'scale(2.05)';
 			element.style.zIndex = '1000';
 			element.style.transition = 'transform 0.65s ease-in-out';
 			element.style.transitionDelay = '0.1s';
+			siblings.forEach((sibling) => {
+				(sibling as HTMLElement).style.transform = 'scale(0)';
+				(sibling as HTMLElement).style.pointerEvents = 'none';
+				(sibling as HTMLElement).style.transition = 'transform 0.65s ease-in-out';
+			});
 		}}
 		onpointerleave={(e) => {
 			const element = (e.target as HTMLElement).closest('.small_card_container') as HTMLElement;
+			const siblings = Array.from(document.querySelectorAll('.small_card_container')).filter(
+				(child) => child !== element
+			);
 			element.style.transform = 'scale(1)';
 			element.style.zIndex = '1';
 			element.style.transition = 'transform 0.65s ease-in-out';
 			element.style.transitionDelay = '0.1s';
+			siblings.forEach((sibling) => {
+				(sibling as HTMLElement).style.transform = 'scale(1)';
+				(sibling as HTMLElement).style.pointerEvents = 'all';
+				(sibling as HTMLElement).style.transition = 'transform 0.65s ease-in-out';
+			});
 		}}
 	>
 		<div class="small_map">
@@ -771,6 +818,7 @@
 			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 		transition-delay: 3s;
 		cursor: pointer;
+		user-select: none;
 	}
 
 	.small_card_sphere {
@@ -902,23 +950,5 @@
 			transform 1s cubic-bezier(0.165, 0.84, 0.44, 1),
 			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 		transition-delay: 1.5s;
-	}
-
-	:global(.markers.show > .small_card_container.enlarge) {
-		transform: scale(2.05) !important;
-		transition: transform 0.1s ease-in-out;
-		transition:
-			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-		transition-delay: 0.125s;
-	}
-
-	:global(.markers.show > .small_card_container.enlarge) {
-		transform: scale(2.05) !important;
-		transition: transform 0.1s ease-in-out;
-		transition:
-			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
-			opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-		transition-delay: 0.125s;
 	}
 </style>

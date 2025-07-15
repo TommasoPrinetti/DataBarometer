@@ -7,7 +7,7 @@ export let isPlanetReady = writable(false);
 
 export const globalOverview = [
 	{
-		displayName: 'Country overall',
+		displayName: 'Country Overall',
 		dataKey: 'Overall',
 		maxValue: 66.85
 	},

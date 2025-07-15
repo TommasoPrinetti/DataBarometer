@@ -4,7 +4,7 @@
 
 <footer>
 	<p>
-		Website and analysis by
+		Website and data distillation by
 		<a href="https://www.tommasoprinetti.com" target="_blank">Tommaso Prinetti ↗︎</a>
 	</p>
 </footer>

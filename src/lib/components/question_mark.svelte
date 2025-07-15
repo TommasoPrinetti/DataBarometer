@@ -41,6 +41,10 @@
 		explanation = 'How effective the country is at using data.';
 	} else if (type === 'Global ranking') {
 		explanation = 'Position in the global ranking.';
+	} else if (type === 'pillars') {
+		explanation = "The three main pillars of the country's data governance system.";
+	} else if (type === 'clusters') {
+		explanation = "The eight evaluation clusters of the country's data governance system.";
 	} else {
 		explanation = 'Fallback explanation';
 	}

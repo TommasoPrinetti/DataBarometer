@@ -48,10 +48,33 @@
 	});
 </script>
 
-<header>
+<header class:in={$isPlanetReady}>
 	<div>
 		<button>
 			<img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" />
+		</button>
+	</div>
+
+	<div>
+		<button
+			onclick={() => {
+				window.location.href = '/about';
+			}}
+		>
+			<p>About this visualization</p>
+		</button>
+	</div>
+
+	<div>
+		<button
+			onclick={() => {
+				const link = document.createElement('a');
+				link.href = '/dataset.csv';
+				link.download = 'Distilled_dataset.csv';
+				link.click();
+			}}
+		>
+			<p>Download the distilled dataset</p>
 		</button>
 	</div>
 
@@ -62,13 +85,6 @@
 			}}
 		>
 			<p>Learn more about the Global Data Barometer ↗︎</p>
-		</button>
-		<button
-			onclick={() => {
-				window.open('https://globaldatabarometer.org/open-data/', '_blank');
-			}}
-		>
-			<p>Data sources</p>
 		</button>
 	</div>
 </header>
@@ -86,6 +102,7 @@
 
 	<button
 		class="explore_button"
+		class:in={$isPlanetReady}
 		onclick={() =>
 			lenis.scrollTo(exploreWrapper, {
 				duration: 1.2,
@@ -120,27 +137,6 @@
 </section>
 
 <style>
-	:global(*) {
-		font-family: 'Rethink Sans', sans-serif;
-		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
-		font-style: normal;
-	}
-
-	:global(html) {
-		overflow-x: hidden;
-		max-width: 100%;
-	}
-
-	:global(body) {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		position: relative;
-	}
-
 	.hero_section {
 		width: 100%;
 		height: 100vh;
@@ -189,52 +185,6 @@
 		scroll-snap-type: y mandatory;
 	}
 
-	header {
-		background: transparent;
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		z-index: 100;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0px 20px;
-		color: #fff;
-		font-size: 1.2rem;
-		font-weight: 600;
-		height: 45px;
-	}
-
-	header > div {
-		display: flex;
-		flex-direction: row;
-		column-gap: 20px;
-	}
-
-	:global(button) {
-		all: unset;
-		background: transparent;
-		border: none;
-		color: black;
-		cursor: pointer;
-		display: inline-block;
-		font: inherit;
-		line-height: normal;
-		margin: 0;
-		overflow: visible;
-		padding: 0;
-		text-align: center;
-		text-decoration: none;
-		text-transform: none;
-		user-select: none;
-		-webkit-user-select: none;
-		vertical-align: middle;
-		white-space: normal;
-		width: auto;
-	}
-
 	.hero_title {
 		position: relative;
 		z-index: 2; /* above planet-wrapper (z-index 1) */
@@ -257,12 +207,6 @@
 		-webkit-user-select: text;
 		-moz-user-select: text;
 		-ms-user-select: text;
-	}
-
-	.gd_barometer_logo {
-		width: 100px;
-		height: auto;
-		z-index: 2;
 	}
 
 	:global(.hero_title.out) {
@@ -293,56 +237,11 @@
 			transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
 	}
 
-	:global(h1) {
-		font-size: 48px;
-		line-height: auto;
-		font-weight: 200;
-		font-style: normal;
-		text-transform: uppercase;
-		line-height: 113.372%;
-		letter-spacing: -1px;
-		user-select: text;
-		-webkit-user-select: text;
-		-moz-user-select: text;
-		-ms-user-select: text;
-	}
-
-	::selection {
-		color: whitesmoke;
-		background: black;
-	}
-
-	h1 > span {
-		font-style: italic;
-		text-decoration: underline;
-		text-decoration-thickness: 4px;
-		text-underline-offset: 4px;
-		transition: all 0.3s ease-in-out;
-	}
-
-	:global(h2) {
-		font-size: 24px;
-		line-height: auto;
-		font-weight: 200;
-	}
-
-	:global(h3) {
-		font-size: 18px;
-		line-height: auto;
-		font-weight: 200;
-	}
-
-	:global(p) {
-		font-size: 16px;
-		line-height: auto;
-		font-weight: 200;
-	}
-
 	.explore_button {
 		position: sticky;
 		top: 90%;
 		left: 50%;
-		transform: translate(-50%, 0%);
+		transform: translate(-50%, 200%);
 		z-index: 1000;
 		background-color: rgba(255, 255, 255, 0.8);
 		backdrop-filter: blur(10px);
@@ -353,6 +252,17 @@
 		cursor: pointer;
 		font-size: 16px;
 		z-index: 12;
+		transition:
+			transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 1.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+	}
+
+	.explore_button.in {
+		transition:
+			transform 2.2s cubic-bezier(0.165, 0.84, 0.44, 1),
+			opacity 1.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+		transition-delay: 1.2s;
+		transform: translate(-50%, 0%);
 	}
 
 	.explore_button:hover {
