@@ -80,6 +80,7 @@
 
 	<div>
 		<button
+			id="desktop_show"
 			onclick={() => {
 				window.open('https://globaldatabarometer.org/', '_blank');
 			}}

@@ -27,6 +27,7 @@
 
 	:global(header) {
 		background: transparent;
+		mix-blend-mode: difference;
 		position: fixed;
 		top: -100%;
 		left: 0;
@@ -37,7 +38,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0px 20px;
-		color: #fff;
+		color: #000000;
 		font-size: 1.2rem;
 		font-weight: 600;
 		height: 45px;

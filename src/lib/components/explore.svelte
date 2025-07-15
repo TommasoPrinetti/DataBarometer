@@ -15,7 +15,8 @@
 	>
 		<label for="country-select">
 			<h1 class="explore_title" id="mobile_show">
-				View this website on a <b>larger device 🖥️</b> to enjoy the full experience
+				The experience is not yet implemented for mobile devices. Please, consider returning to a
+				<b>desktop</b> one 🖥️
 			</h1>
 			<h1 class="explore_title" id="desktop_show">
 				how's the <i>data</i> situation in
