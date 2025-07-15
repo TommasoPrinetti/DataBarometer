@@ -319,9 +319,9 @@
 							<h2>Three main pillars <QuestionMark type="pillars" /></h2>
 							<button class="worst_best_button" onclick={() => isWorstMode.set(!$isWorstMode)}>
 								{#if $isWorstMode}
-									<p>worst</p>
+									<p>Compare with best country</p>
 								{:else}
-									<p>best</p>
+									<p>Compare with worst country</p>
 								{/if}
 							</button>
 						</div>
@@ -454,7 +454,7 @@
 				<p>{countryData.Flag}</p>
 			</div>
 			<div class="small_counters">
-				<p><b>Average:</b> {countryData.Overall_per_country}</p>
+				<p><b>Average:</b> {countryData.Overall}</p>
 				<p><b>Availability:</b> {countryData.Availability}</p>
 				<p><b>Capability:</b> {countryData.Capability}</p>
 			</div>
@@ -634,6 +634,7 @@
 		transform: translateY(110%) scale(1);
 		background-color: rgb(255, 239, 65);
 		fill: black;
+		border: 1px solid black;
 		transition: transform 0.8s ease-in-out filter 0.3s ease-in-out background-color 0.3s ease-in-out;
 	}
 
@@ -1000,7 +1001,7 @@
 	}
 
 	.small_card_container {
-		width: fit-content;
+		width: max-content;
 		height: 115px;
 		display: inline-flex;
 		flex-direction: row;
