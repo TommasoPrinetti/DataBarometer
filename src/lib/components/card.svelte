@@ -319,9 +319,9 @@
 							<h2>Three main pillars <QuestionMark type="pillars" /></h2>
 							<button class="worst_best_button" onclick={() => isWorstMode.set(!$isWorstMode)}>
 								{#if $isWorstMode}
-									<p>Compare with best country</p>
+									<p>Compare w/ best country</p>
 								{:else}
-									<p>Compare with worst country</p>
+									<p>Compare w/ worst country</p>
 								{/if}
 							</button>
 						</div>
@@ -347,9 +347,9 @@
 							<h2>Eight evaluation clusters<QuestionMark type="clusters" /></h2>
 							<button class="worst_best_button" onclick={() => isWorstMode.set(!$isWorstMode)}>
 								{#if $isWorstMode}
-									<p>worst</p>
+									<p>Compare w/ best country</p>
 								{:else}
-									<p>best</p>
+									<p>Compare w/ worst country</p>
 								{/if}
 							</button>
 						</div>
