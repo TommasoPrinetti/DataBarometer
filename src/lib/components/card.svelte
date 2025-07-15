@@ -164,8 +164,6 @@
 	}
 
 	function toggleCard(el: HTMLElement) {
-		//console.log(el);
-
 		if (el.classList.contains('hidden')) {
 			el.classList.remove('hidden');
 		} else {
@@ -188,10 +186,8 @@
 	<script>
 		setTimeout(() => {
 			if (document.querySelector(`.card_container.hidden`)) {
-				//console.log('removing hidden');
 				document.querySelector(`.card_container.hidden`).classList.remove('hidden');
 			} else {
-				//console.log('adding hidden');
 				document.querySelector(`.card_container`).classList.add('hidden');
 			}
 		}, 600);
@@ -412,7 +408,6 @@
 			const siblings = Array.from(document.querySelectorAll('.small_card_container')).filter(
 				(child) => child !== element
 			);
-			//(siblings);
 			element.style.transform = 'scale(2.05)';
 			element.style.zIndex = '1000';
 			element.style.transition = 'transform 0.65s ease-in-out';
@@ -491,7 +486,6 @@
 				</svg>
 			</button>
 			<button id="reddit_sharer" onclick={shareOnReddit} aria-label="Share on Reddit">
-				<!-- Reddit icon -->
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280">
 					<path
 						d="M140.077 186.577C151.036 186.564 161.989 187.102 172.895 188.188C173.303 188.228 173.696 188.363 174.043 188.582C174.39 188.801 174.68 189.099 174.892 189.45C175.104 189.801 175.23 190.197 175.263 190.605C175.295 191.014 175.231 191.424 175.077 191.804C172.193 198.709 167.332 204.607 161.104 208.756C154.876 212.904 147.56 215.119 140.077 215.119C132.593 215.119 125.277 212.905 119.049 208.756C112.821 204.607 107.96 198.709 105.077 191.804C104.92 191.424 104.854 191.013 104.885 190.604C104.916 190.194 105.042 189.797 105.254 189.446C105.467 189.094 105.758 188.796 106.106 188.578C106.454 188.359 106.85 188.226 107.259 188.188C117.479 187.15 128.538 186.577 140.077 186.577Z"

@@ -38,7 +38,7 @@
 
 	function getMarkerPosition(lat: number, lon: number): [number, number, number] {
 		const basePosition = latLongToCartesian(lat, lon);
-		const offsetFactor = 1.01; // Push markers 15% outward from sphere surface
+		const offsetFactor = 1.01;
 		return [
 			basePosition[0] * offsetFactor,
 			basePosition[1] + sphereYPosition * (offsetFactor - 1),
