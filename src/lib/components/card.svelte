@@ -1,8 +1,6 @@
 <script lang="ts">
 	import gdBarometerLogo from '$lib/assets/globaldatabarometer.png';
 	import QuestionMark from '$lib/components/question_mark.svelte';
-	import terrainTest from '$lib/assets/terrain_test.png';
-	import bolivia from '$lib/assets/bolivia.png';
 	import BarChart from '$lib/components/BarChart.svelte';
 	import {
 		isChartMode,
@@ -24,7 +22,6 @@
 
 	let showSharer = writable(false);
 	let copierAlert: HTMLElement;
-
 	let cardContainer: HTMLElement | null;
 
 	function getCountryImageKey(countryName: string): string {
@@ -65,7 +62,8 @@
 				backgroundColor: 'transparent',
 				scale: 2,
 				useCORS: true,
-				allowTaint: true
+				allowTaint: true,
+				imageTimeout: 15000
 			});
 
 			const finalCanvas = document.createElement('canvas');
@@ -107,6 +105,7 @@
 				logoImg.src = gdBarometerLogo;
 			}
 		} catch (error) {
+			console.error('Export error:', error);
 		} finally {
 			questionMarks.forEach((el, i) => {
 				(el as HTMLElement).style.display = prevDisplay[i] || '';
@@ -165,7 +164,7 @@
 	}
 
 	function toggleCard(el: HTMLElement) {
-		console.log(el);
+		//console.log(el);
 
 		if (el.classList.contains('hidden')) {
 			el.classList.remove('hidden');
@@ -185,14 +184,14 @@
 	});
 </script>
 
-{#if $isCurrentCountry === countryData.CountryName && !isSmall}
+{#if $isCurrentCountry === countryData.CountryName && !isSmall && countryImages}
 	<script>
 		setTimeout(() => {
 			if (document.querySelector(`.card_container.hidden`)) {
-				console.log('removing hidden');
+				//console.log('removing hidden');
 				document.querySelector(`.card_container.hidden`).classList.remove('hidden');
 			} else {
-				console.log('adding hidden');
+				//console.log('adding hidden');
 				document.querySelector(`.card_container`).classList.add('hidden');
 			}
 		}, 600);
@@ -206,11 +205,16 @@
 	>
 		{#if !$isChartMode}
 			<div class="card_columns" id="terrain_column">
-				<img
-					src={countryImages[getCountryImageKey(countryData.CountryName)]}
-					alt={countryData.CountryName}
-					class="terrain_image"
-				/>
+				{#if countryImages[getCountryImageKey(countryData.CountryName)]}
+					<enhanced:img
+						in:fade={{ duration: 1000, delay: 1000, easing: (t) => t * t }}
+						src={countryImages[getCountryImageKey(countryData.CountryName)]}
+						alt={countryData.CountryName}
+						class="terrain_image"
+						style="object-fit: contain;"
+						sizes="(max-width:600px)"
+					/>
+				{/if}
 			</div>
 
 			<div class="card_columns" id="textual_data">
@@ -367,7 +371,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- <img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" /> -->
 			</div>
 		{/if}
 
@@ -397,7 +400,7 @@
 			>
 		</button>
 	</div>
-{:else if isSmall}
+{:else if isSmall && countryImages}
 	<div class="small_card_sphere" style="transition-delay: {index * 0.1}s;"></div>
 	<div
 		class="small_card_container"
@@ -409,7 +412,7 @@
 			const siblings = Array.from(document.querySelectorAll('.small_card_container')).filter(
 				(child) => child !== element
 			);
-			console.log(siblings);
+			//(siblings);
 			element.style.transform = 'scale(2.05)';
 			element.style.zIndex = '1000';
 			element.style.transition = 'transform 0.65s ease-in-out';
@@ -437,11 +440,13 @@
 		}}
 	>
 		<div class="small_map">
-			<enhanced:img
-				src={countryImages[getCountryImageKey(countryData.CountryName)]}
-				alt="Map"
-				loading="lazy"
-			/>
+			{#if countryImages[getCountryImageKey(countryData.CountryName)]}
+				<enhanced:img
+					src={countryImages[getCountryImageKey(countryData.CountryName)]}
+					alt="Map"
+					loading="lazy"
+				/>
+			{/if}
 		</div>
 		<div class="small_info_container">
 			<div class="small_header">
@@ -595,10 +600,29 @@
 		transition: transform 0.1s ease-in-out;
 	}
 
-	.terrain_image {
+	:global(.terrain_image) {
 		width: 100%;
-		object-fit: contain;
 		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+	}
+
+	:global(.terrain_image picture) {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	:global(.terrain_image > picture > img) {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		max-width: 100%;
+		max-height: 100%;
 	}
 
 	.side_button > svg {
@@ -689,11 +713,13 @@
 		width: 48%;
 		height: 100%;
 		border-radius: 20px;
-		background-color: rgb(251, 251, 251);
+		background-color: rgb(255, 255, 255);
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;
+		border-radius: 20px;
+		overflow: hidden;
 	}
 
 	.card_columns:nth-of-type(2) {
@@ -1032,7 +1058,17 @@
 	:global(.small_map > img, picture) {
 		width: 100%;
 		height: 100%;
+		max-width: 100%;
+		max-height: 100%;
 		object-fit: contain;
+	}
+
+	:global(.small_map > picture > img) {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		max-width: 100%;
+		max-height: 100%;
 	}
 
 	.small_info_container {
