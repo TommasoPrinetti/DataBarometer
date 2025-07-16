@@ -408,6 +408,7 @@
 			const siblings = Array.from(document.querySelectorAll('.small_card_container')).filter(
 				(child) => child !== element
 			);
+			const yellowSpheres = document.querySelectorAll('.small_card_sphere') as NodeListOf<HTMLElement>;
 			element.style.transform = 'scale(15)';
 			element.style.zIndex = '1000';
 			element.style.opacity = '1';
@@ -418,12 +419,17 @@
 				(sibling as HTMLElement).style.pointerEvents = 'none';
 				(sibling as HTMLElement).style.transition = 'transform 0.65s ease-in-out';
 			});
+			yellowSpheres.forEach((sphere) => {
+				sphere.style.transform = 'scale(0)';
+				sphere.style.transition = 'transform 0.65s ease-in-out';
+			});
 		}}
 		onpointerleave={(e) => {
 			const element = (e.target as HTMLElement).closest('.small_card_container') as HTMLElement;
 			const siblings = Array.from(document.querySelectorAll('.small_card_container')).filter(
 				(child) => child !== element
 			);
+			const yellowSpheres = document.querySelectorAll('.small_card_sphere') as NodeListOf<HTMLElement>;
 			element.style.transform = 'scale(8)';
 			element.style.zIndex = '1';
 			element.style.transition = 'transform 0.65s ease-in-out';
@@ -432,6 +438,10 @@
 				(sibling as HTMLElement).style.transform = 'scale(7)';
 				(sibling as HTMLElement).style.pointerEvents = 'all';
 				(sibling as HTMLElement).style.transition = 'transform 0.65s ease-in-out';
+			});
+			yellowSpheres.forEach((sphere) => {
+				sphere.style.transform = 'scale(7)';
+				sphere.style.transition = 'transform 0.65s ease-in-out';
 			});
 		}}
 	>
