@@ -69,8 +69,8 @@
 			const finalCanvas = document.createElement('canvas');
 			const ctx = finalCanvas.getContext('2d');
 
-			finalCanvas.width = 2520;
-			finalCanvas.height = 1580;
+			finalCanvas.width = 3500;
+			finalCanvas.height = 2000;
 
 			if (ctx) {
 				ctx.fillStyle = '#ffffff';
@@ -208,7 +208,7 @@
 						alt={countryData.CountryName}
 						class="terrain_image"
 						style="object-fit: contain;"
-						sizes="(max-width:600px)"
+						sizes="600px"
 					/>
 				{/if}
 			</div>
@@ -408,8 +408,9 @@
 			const siblings = Array.from(document.querySelectorAll('.small_card_container')).filter(
 				(child) => child !== element
 			);
-			element.style.transform = 'scale(2.05)';
+			element.style.transform = 'scale(15)';
 			element.style.zIndex = '1000';
+			element.style.opacity = '1';
 			element.style.transition = 'transform 0.65s ease-in-out';
 			element.style.transitionDelay = '0.1s';
 			siblings.forEach((sibling) => {
@@ -423,12 +424,12 @@
 			const siblings = Array.from(document.querySelectorAll('.small_card_container')).filter(
 				(child) => child !== element
 			);
-			element.style.transform = 'scale(1)';
+			element.style.transform = 'scale(8)';
 			element.style.zIndex = '1';
 			element.style.transition = 'transform 0.65s ease-in-out';
 			element.style.transitionDelay = '0.1s';
 			siblings.forEach((sibling) => {
-				(sibling as HTMLElement).style.transform = 'scale(1)';
+				(sibling as HTMLElement).style.transform = 'scale(7)';
 				(sibling as HTMLElement).style.pointerEvents = 'all';
 				(sibling as HTMLElement).style.transition = 'transform 0.65s ease-in-out';
 			});
@@ -680,10 +681,12 @@
 		display: flex;
 		flex-direction: row;
 
-		width: 1200px;
+		width: 1300px;
 		min-width: 920px;
+		max-height: 1000px;
 
 		height: 90%;
+
 		justify-content: space-between;
 		border-radius: 30px;
 		padding: 20px;
@@ -699,6 +702,24 @@
 		will-change: transform, opacity;
 	}
 
+	@media (min-width: 1600px) {
+		.card_container {
+			width: 1600px;
+		}
+
+		#textual_data {
+			width: 50%;
+		}
+
+		.data_triple_grid > div > h3 {
+			font-size: 26px;
+		}
+
+		.data_triple_grid {
+			grid-row-gap: 30px !important;
+		}
+	}
+
 	:global(.card_container.hidden) {
 		transform: translate(-50%, 200%) scale(0.8);
 		transition:
@@ -709,7 +730,7 @@
 	}
 
 	.card_columns {
-		width: 48%;
+		width: 50%;
 		height: 100%;
 		border-radius: 20px;
 		background-color: rgb(255, 255, 255);
@@ -719,6 +740,11 @@
 		align-items: center;
 		border-radius: 20px;
 		overflow: hidden;
+	}
+
+	.card_columns:nth-of-type(1) {
+		align-items: center;
+		justify-content: center;
 	}
 
 	.card_columns:nth-of-type(2) {
@@ -760,7 +786,7 @@
 	}
 
 	.data_grid {
-		width: max-content;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -772,11 +798,11 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 0px;
-		width: max-content;
+		width: 100%;
 	}
 
 	.data_triple_grid {
-		width: max-content;
+		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-row-gap: 10px;
@@ -797,10 +823,21 @@
 		display: flex;
 		flex-direction: column;
 		overflow: visible;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.single_chart_container > .number_container {
+		align-items: flex-end;
+		width: 30%;
+		min-width: 30%;
+	}
+
+	.data_triple_grid > .number_container {
+		align-items: flex-start;
 	}
 
 	.number_container > h3 {
-		font-size: 20px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -852,6 +889,8 @@
 		width: max-content;
 		padding-top: 10px;
 		padding-bottom: 10px;
+		align-items: flex-start;
+		justify-content: center;
 	}
 
 	.chart_header > .number_container > p {
@@ -860,7 +899,6 @@
 
 	.chart_header > .number_container > h3,
 	.single_chart_container > :nth-child(1) > h3 {
-		font-size: 14px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -869,7 +907,6 @@
 
 	.chart_header > .number_container > p,
 	.single_chart_container > :nth-child(1) > p {
-		font-size: 12px;
 		color: black;
 	}
 
@@ -931,7 +968,6 @@
 		border-radius: 20px;
 		display: flex;
 		justify-content: space-between;
-		padding: 20px 10px;
 		position: relative;
 	}
 
@@ -940,12 +976,14 @@
 		justify-content: center;
 		column-gap: auto;
 		border: 1px solid #000000;
+		padding: 20px 20px !important;
 	}
 
 	.dx_column {
 		flex-direction: column;
 		align-items: center;
 		border: 1px solid #000000;
+		padding: 20px 40px !important;
 	}
 
 	.single_chart_container {
@@ -1169,7 +1207,7 @@
 
 	:global(.markers.show > .small_card_sphere) {
 		transition-delay: 0s;
-		transform: scale(1);
+		transform: scale(7);
 		opacity: 1;
 		transition:
 			transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
@@ -1179,7 +1217,7 @@
 
 	:global(.markers.show > .small_card_container) {
 		transition-delay: 3s;
-		transform: scale(1);
+		transform: scale(7);
 		transform-origin: left top;
 		opacity: 1;
 		transition:

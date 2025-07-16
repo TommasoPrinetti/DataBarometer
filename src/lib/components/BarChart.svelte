@@ -11,9 +11,17 @@
 <div class="chart">
 	<div class="box_chart">
 		{#if isVertical}
-			<div style="height: {length}%" in:slide={{ duration: 1500, axis: 'y', delay: 1000 }}></div>
+			{#if length > 0}
+				<div style="height: {length}%" in:slide={{ duration: 1500, axis: 'y', delay: 1000 }}></div>
+			{:else}
+				<div style="height: 1%; background-color: #ff0000" in:slide={{ duration: 1500, axis: 'y', delay: 1000 }}></div>
+			{/if}
 		{:else}
-			<div style="width: {length}%"></div>
+		{#if length > 0}
+				<div style="width: {length}%"></div>
+			{:else}
+				<div style="width: 1%; background-color: #ff0000"></div>
+			{/if}
 		{/if}
 		<p>{flag}</p>
 	</div>
@@ -45,7 +53,7 @@
 
 	.box_chart {
 		width: 100%;
-		height: 15px;
+		height: 30%;
 		display: flex;
 		flex-direction: row;
 		column-gap: 5px;

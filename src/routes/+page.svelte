@@ -50,19 +50,31 @@
 
 <header class:in={$isPlanetReady}>
 	<div>
-		<button>
-			<img src={gdBarometerLogo} alt="GD Barometer logo" class="gd_barometer_logo" />
-		</button>
-	</div>
-
-	<div>
 		<button
 			onclick={() => {
 				window.location.href = '/about';
 			}}
 		>
-			<p>About this visualization</p>
+			<p>About</p>
 		</button>
+
+		<button>
+			<p>Github</p>
+		</button>
+	</div>
+
+	<div class="header_grey_button">
+		<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f"><path d="M480-100q-78.85 0-148.2-29.92t-120.65-81.21q-51.3-51.29-81.22-120.63Q100-401.1 100-479.93q0-78.84 29.93-148.21 29.92-69.37 81.22-120.68t120.65-81.25Q401.15-860 480-860q140.08 0 244.27 88.19t128.65 220.73q-15.38-6.92-31.37-10.48-15.99-3.56-33.09-4.21-19.77-71.46-68.69-127.11-48.92-55.66-119.77-83.89V-760q0 33-23.5 56.5T520-680h-80v80q0 17-11.5 28.5T400-560h-80v80h240q10.29 0 19.19 4.92 8.89 4.93 14.27 13.77-15.88 26.05-24.28 54.99-8.41 28.93-8.41 59.78 0 58.77 30.38 110.08 30.39 51.3 61.7 95.23-39.47 20-82.73 30.61Q526.85-100 480-100Zm-40-62v-78q-33 0-56.5-23.5T360-320v-40L168-552q-3 18-5.5 36t-2.5 36q0 121 79.5 212T440-162Zm340 62q-5.08 0-8.95-3.01-3.88-3.01-5.43-7.53-11-34.62-30.43-64.42-19.42-29.81-42.04-58.43-19.46-24.46-32.07-52.96-12.62-28.5-12.62-60.36 0-54.37 38.53-92.87 38.53-38.5 93.04-38.5 54.51 0 93.01 38.53 38.5 38.52 38.5 93.01 0 31.54-12.84 59.82-12.84 28.29-31.85 53.33-22.24 29-41.93 58.64-19.7 29.64-30.54 64.21-1.55 4.52-5.43 7.53Q785.08-100 780-100Zm0-93.38q11.15-18.93 23.92-35.54 12.77-16.62 24.93-33.54 14-18.58 24.5-39.6 10.5-21.02 10.5-44.48 0-34.92-24.47-59.38-24.46-24.47-59.38-24.47t-59.38 24.47q-24.47 24.46-24.47 59.38 0 23.46 10.5 44.48 10.5 21.02 24.5 39.6 13.16 16.92 25.43 33.73 12.27 16.81 23.42 35.35Zm1.15-110.85q-17.77 0-30.03-12.27-12.27-12.27-12.27-30.04t12.27-30.04q12.26-12.27 30.03-12.27 17.77 0 30.04 12.27t12.27 30.04q0 17.77-12.27 30.04t-30.04 12.27Z"/></svg>
+		<button onclick={() => {
+			window.open('https://globaldatabarometer.org/', '_blank');
+		}}
+		>
+			<p>Learn more about the Global Data Barometer ↗︎</p>
+		</button>
+	</div>
+	
+	<div>
+		
 	</div>
 
 	<div>
@@ -77,17 +89,7 @@
 			<p>Download the distilled dataset</p>
 		</button>
 	</div>
-
-	<div>
-		<button
-			id="desktop_show"
-			onclick={() => {
-				window.open('https://globaldatabarometer.org/', '_blank');
-			}}
-		>
-			<p>Learn more about the Global Data Barometer ↗︎</p>
-		</button>
-	</div>
+	
 </header>
 <section class="hero_section" bind:this={heroSection}>
 	<div class="hero_title" class:out={$isPlanetReady}>
@@ -183,9 +185,14 @@
 		height: 100vh;
 		position: relative;
 		z-index: 10;
-		background-color: rgba(255, 255, 255, 0.1);
+		background-color: transparent;
 		scroll-snap-align: start;
 		scroll-snap-type: y mandatory;
+		pointer-events: none;
+	}
+
+	:global(.explore_wrapper > *) {
+		pointer-events: auto;
 	}
 
 	.hero_title {
@@ -290,6 +297,44 @@
 
 	:global(#desktop_show) {
 		display: block;
+	}
+
+	.header_grey_button {
+		display: flex;
+		flex-direction: row;
+		column-gap: 2px;
+		align-items: center;
+		justify-content: center;
+		border-radius: 10px;
+	
+		width: fit-content;
+		height: fit-content;
+	}
+
+	.header_grey_button > :nth-child(1) {
+		width: 25px;
+		height: 25px;
+		background-color: #E4E4E4;
+		padding: 2px 5px;
+		border-radius: 5px;
+	}
+
+	.header_grey_button > *:hover {
+		transition:
+			filter 0.3s ease-in-out,
+			backdrop-filter 0.3s ease-in-out,	
+			background-color 0.3s ease-in-out,
+			border 0.3s ease-in-out;
+		transition-delay: 0.08s;
+		background-color: rgba(235, 235, 235, 0.62);
+	}
+
+	.header_grey_button > :nth-child(2) {
+		width: fit-content;
+		height: 20px;
+		background-color: #E4E4E4;
+		padding: 3px 5px;
+		border-radius: 5px;
 	}
 
 	@media (max-width: 768px) {

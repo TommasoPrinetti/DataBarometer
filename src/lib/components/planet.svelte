@@ -129,16 +129,16 @@
 			<OrbitControls
 				enablePan={false}
 				enableZoom={false}
+				enableRotate={true}
 				enableDamping={true}
 				dampingFactor={0.1}
 				autoRotate={true}
 				autoRotateSpeed={0.1}
-				rotateSpeed={0.3}
+				rotateSpeed={1}
 				zoomToCursor={false}
 				zoomSpeed={1}
 				minPolarAngle={0}
 				maxPolarAngle={Math.PI}
-				enableRotate={false}
 			/>
 		</T.PerspectiveCamera>
 
@@ -166,7 +166,7 @@
 				center={true}
 				distanceFactor={1.1}
 				occlude="raycast"
-				transform={true}
+				transform={false}
 				zIndexRange={[0, 1000]}
 				castShadow={true}
 				pointer-events={true}

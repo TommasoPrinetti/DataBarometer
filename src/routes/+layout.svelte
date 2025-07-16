@@ -62,6 +62,12 @@
 		column-gap: 20px;
 	}
 
+	:global(header > div > button > p) {
+		font-size: 12px;
+		line-height: auto;
+		font-weight: 200;
+	}
+
 	:global(header > div > button:hover) {
 		text-decoration: underline;
 		text-decoration-thickness: 1px;
@@ -112,12 +118,12 @@
 		-ms-user-select: text;
 	}
 
-	::selection {
+	:global(::selection) {
 		color: whitesmoke;
 		background: black;
 	}
 
-	h1 > span {
+	:global(h1 > span) {
 		font-style: italic;
 		text-decoration: underline;
 		text-decoration-thickness: 4px;
@@ -141,5 +147,15 @@
 		font-size: 16px;
 		line-height: auto;
 		font-weight: 200;
+	}
+
+	@media (min-width: 1600px) {
+		:global(h3) {
+			font-size: 22px;
+		}
+
+		:global(p) {
+			font-size: 18px;
+		}
 	}
 </style>
