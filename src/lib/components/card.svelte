@@ -125,7 +125,7 @@
 		}
 		setTimeout(() => {
 			const text = encodeURIComponent(
-				`Check out ${countryData.CountryName}'s data barometer results!`
+				`Check out how ${countryData.CountryName} performed in 2024 Global Data Barometer results!`
 			);
 			const url = encodeURIComponent(window.location.href);
 			window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`);

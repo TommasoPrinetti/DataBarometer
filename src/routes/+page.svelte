@@ -58,7 +58,9 @@
 			<p>About</p>
 		</button>
 
-		<button>
+		<button onclick={() => {
+			window.open('https://github.com/TommasoPrinetti/DataBarometer', '_blank');
+		}}>
 			<p>Github</p>
 		</button>
 	</div>
