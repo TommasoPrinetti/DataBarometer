@@ -1,46 +1,53 @@
-Global Data Barometer Explorer
+# Global Data Barometer Explorer
 
-Accessible, comparative country "data portraits" distilled from the Global Data Barometer (GDB) research datasets. Prototype submitted to the Global Data Barometer concourse.
+Prototype for fast, comparative “data portraits” of every country, built on the Global Data Barometer’s research.
 
-Live site: https://data-barometer-exp.vercel.app/About: https://data-barometer-exp.vercel.app/about
+**Live site:** <https://data-barometer-exp.vercel.app>  
+**About page:** <https://data-barometer-exp.vercel.app/about>
 
-Overview
+## Overview 
 
-Governments generate large volumes of data, but availability, openness, and practical usability vary widely. The Global Data Barometer documents these conditions through an expert-led research program covering governance, capability, availability, and use of data for the public good. This explorer narrows that rich evidence base into a quick, visual orientation layer aimed at non‑specialists: pick a country, see an at‑a‑glance profile, follow inline explanations, and share a card that carries the story forward.
+The Global Data Barometer (GDB) tracks how nations govern, provide, and use data for public good.  
+This explorer distills that evidence into an orientation layer for non-specialists: pick a country, get a snapshot, follow plain-language hints, and share a card that carries the story forward. :contentReference[oaicite:0]{index=0}
 
-Data: distilled, not re‑scored
+## Data — distilled, not re-scored 
 
-The app pulls from the Global Data Barometer’s published datasets (editions vary; check site for current coverage). Multiple GDB tables are assembled and reduced to a per‑country record. Rather than reproduce original numeric scales, each displayed parameter is mapped between the observed "worst" and "best" values in the included data. Think of it as a comparative signal to support sense‑making—not a substitute for official indicator scores. I describe this as a deliberate de‑mathematization step: making relative patterns legible before you dive into the numbers.
+Multiple GDB tables are merged into one per-country record.  
+Every displayed parameter is rescaled between the observed “worst” and “best” values, trading absolute scores for relative pattern-finding. Think of it as **de-mathematization**: clarity first, numbers later. :contentReference[oaicite:1]{index=1}
 
-Design intent
+## Design intent 
 
-My first encounter with the GDB data: impressive depth; also hard to grasp quickly without domain knowledge. This project aims to lower that entry cost. Question‑mark affordances next to most labels surface short plain‑language descriptions drawn from the Barometer’s conceptual framework. The initial globe view anchors each country in its global data governance context and invites exploration.
+My first contact with the GDB datasets revealed impressive depth—and a steep learning curve.  
+Question-mark tooltips translate indicator jargon; a globe landing view anchors each nation in the wider governance map. The goal is to lower entry costs without dumbing anything down. :contentReference[oaicite:2]{index=2}
 
-Country cards & sharing
+## Country cards & sharing 
 
-Selecting a country generates a compact card that bundles distilled scores, minimal context facts, and a stylized relief image hinting at place (AI‑generated; illustrative only). Cards can be downloaded (static) or animated for presentations and social sharing—small, portable touch points that help spread awareness of the Barometer’s work.
+Selecting a country generates a compact card: distilled metrics, key context facts, and a stylised AI-generated relief image. Cards export as static PNGs or gentle animations for slides and social posts—small, portable touch-points that spotlight the Barometer’s work. :contentReference[oaicite:3]{index=3}
 
-Experience notes
+## Experience notes 
 
-• Desktop‑first for clarity.• Lightweight interaction; hover/tap for explanations.• Visual hierarchy favors immediate pattern reading over dense charts.• Less "statistical dashboard," more "orientation map."
+1. Desktop-first for legibility.  
+2. Hover/tap reveals concise explanations.  
+3. Visual hierarchy favours instant pattern reading over dense charts.  
+4. Less “dashboard”, more “orientation map”.
 
-Scope & caveats
+## Scope & caveats 
 
-• Comparative scaling is optimized for communication; do not treat visual lengths as precise metrics.• Always cite the Global Data Barometer when reusing data.• Check edition/year before combining with other sources; country coverage differs across releases.• Relief images are decorative, not cartographic.
+1. Comparative bars support storytelling; do **not** treat lengths as precise metrics.  
+2. Always cite the Global Data Barometer when reusing data.  
+3. Edition/year coverage varies—check before combining with other sources.  
+4. Relief images are decorative, not cartographic.
 
-Attribution
+## Attribution 
 
-Data & underlying research: © Global Data Barometer. See the GDB site for data downloads, methodology, and licensing terms.
+Data & research © Global Data Barometer — see the GDB site for downloads, methodology, and licensing.  
+Design & development: **Tommaso Prinetti** (SciencesPo médialab / independent designer-researcher).
 
-Project design & development: Tommaso Prinetti (SciencesPo médialab / independent designer‑researcher).
+## Cite 
 
-Thanks to the Global Data Barometer team & partners for making the data open and reviewable.
+> Prinetti, T. (2025). *Global Data Barometer Explorer* [visualisation prototype]. <https://data-barometer-exp.vercel.app/>  
+> Data: Global Data Barometer (specify edition & year). <https://globaldatabarometer.org/>
 
-Cite
+## Questions? 
 
-Suggested citation (adapt as needed):
-
-Prinetti, T. (2025). Global Data Barometer Explorer [Visualization prototype]. https://data-barometer-exp.vercel.app/  Data: Global Data Barometer (see specific edition & year). https://globaldatabarometer.org/
-
-Questions or suggestions? Open an issue.
-
+Open an issue—feedback welcomed.
