@@ -61,12 +61,11 @@ Selecting a country produces a compact card: distilled scores, light context fac
 > Update to reflect what you actually shipped; comment out what doesn’t apply.
 
 - **Framework:** SvelteKit.  
-- **Language:** TypeScript.  
+- **Language:** TypeScript / Javascript / Svelte.  
 - **Build tooling:** Vite.  
 - **Hosting:** Vercel.  
-- **3D / Globe:** Three.js (or `three-globe`—confirm).  
-- **Data transforms & scales:** D3 utilities (or your own helper scripts—confirm).  
-- **AI relief imagery:** (tool/service? Midjourney, Stable Diffusion, etc.—confirm).  
+- **3D / Globe:** Three.js / Threlte .  
+- **AI relief imagery:** OpenAI Sora Image Generator.  
 
 ---
 
@@ -81,13 +80,13 @@ Project design & development: **Tommaso Prinetti** (SciencesPo médialab / indep
 ## Cite
 
 > Prinetti, T. (2025). *Global Data Barometer Explorer* [visualization prototype]. <https://data-barometer-exp.vercel.app/>  
-> Data: Global Data Barometer (specify edition & year). <https://globaldatabarometer.org/>. 
+> Data: Global Data Barometer (2025). <https://globaldatabarometer.org/>. 
 
 ---
 
 ## Questions?
 
-Open an issue—feedback welcome.
+Open an issue—feedbacks are welcome.
   
 ---
 
@@ -109,6 +108,3 @@ Open an issue—feedback welcome.
 
 [three-badge]: https://img.shields.io/badge/Three.js-000000?logo=three.js&logoColor=white&style=flat-square
 [three-url]: https://threejs.org
-
-[d3-badge]: https://img.shields.io/badge/D3.js-f9a03c?logo=d3.js&logoColor=white&style=flat-square
-[d3-url]: https://d3js.org
