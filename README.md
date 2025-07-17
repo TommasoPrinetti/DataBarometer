@@ -1,3 +1,6 @@
+![THUMB](/static/THUMB_opt.jpg)
+
+
 # Global Data Barometer Explorer
 
 Prototype for fast, comparative “data portraits” of every country, built on the Global Data Barometer’s research.
